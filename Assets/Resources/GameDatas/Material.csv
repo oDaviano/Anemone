@@ -1,0 +1,11 @@
+key,name,itemcode,count,price
+0,OAE,19001,5,2
+1,wood,19002,2,3
+2,scrap,19003,4,7
+3,stone,19004,4,5
+4,leather,19005,8,8
+5,lubber,19006,8,7
+6,battery,19007,1,10
+7,cloth,19008,10,5
+8,paper,19009,10,1
+9,cigar,19010,1,4

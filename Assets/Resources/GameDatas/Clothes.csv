@@ -1,0 +1,10 @@
+key,name,itemcode,armor,price
+0,rag,11001,0,1
+1,cloth,11002,3,11
+2,LeatherArmor,11003,5,26
+3,ChainArmor,11004,10,46
+4,BodyArmor,11005,20,75
+5,CycleHelmet,11006,3,5
+6,SafetyHelmet,11007,5,15
+7,MotorCycleHelmet,11008,10,30
+8,KevlarPot,11009,20,45

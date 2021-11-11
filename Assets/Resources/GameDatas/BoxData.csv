@@ -1,0 +1,7 @@
+key,boxname,slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8
+0,shelf,OAE,null,null,null,null,null,null,null
+1,counter,cigar,OAE,null,null,null,null,null,null
+2,icfridge,Drink,null,null,null,null,null,null,null
+3,box,energybar,null,null,null,null,null,null,null
+4,bevfridge,water,null,null,null,null,null,null,null
+5,fridge,drink,null,null,null,null,null,null,null
