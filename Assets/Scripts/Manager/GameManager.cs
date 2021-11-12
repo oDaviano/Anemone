@@ -30,7 +30,15 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (timeLimit > 0)
+        {
+            Time.timeScale = 1.0f;
+            fadeColor.a -= Time.deltaTime * 0.5f;
+            fade.color = fadeColor;
+
+        }
         StartTimer();
+
     }
 
 
@@ -157,13 +165,7 @@ public class GameManager : MonoBehaviour
             fade = uiManager.gameObject.GetComponent<Image>();
             fadeColor = fade.color;
 
-            if (timeLimit > 0)
-            {
-                Time.timeScale = 1.0f;
-                fadeColor.a -= Time.deltaTime * 0.5f;
-                fade.color = fadeColor;
-
-            }
+   
         }
 
     }

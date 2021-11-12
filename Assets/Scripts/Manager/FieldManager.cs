@@ -13,6 +13,7 @@ public class FieldManager : MonoBehaviour
     Text stageName;
     Text stageDiff;
     private List<StageDatas> stages;
+   [SerializeField] GameObject gps;
 
     private string dangerLevel;
     private string itemLevel;
@@ -23,7 +24,7 @@ public class FieldManager : MonoBehaviour
 
     private void Awake()
     {
-   
+        gps.SetActive(false);
         ButtonInitialize();
 
     }
@@ -34,9 +35,11 @@ public class FieldManager : MonoBehaviour
         for (int i = 0; i < areaButtons.Length; i++)
         {
             int index = i;
-         
+  
             areaButtons[index].onClick.AddListener(() =>
             {
+                gps.SetActive(true);
+                gps.transform.position = new Vector3(areaButtons[index].transform.position.x, areaButtons[index].transform.position.y+10);
                 star = "";
                 stageInfo = GameObject.Find("StageInfo");
                 stageName = GameObject.Find("StageName").GetComponent<Text>();
