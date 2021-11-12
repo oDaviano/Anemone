@@ -17,8 +17,9 @@ public class GameManager : MonoBehaviour
     private int score;
     private float timeLimit = 300;
     private int dateCount = 0;
-
     private int callInven = 0;
+
+    public List<ItemSlotInfo> inventoryItems = new List<ItemSlotInfo>();
 
     void Awake()
     {
@@ -29,79 +30,23 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if ((SceneManager.GetActiveScene().name == "Convenience"))
-        {
-            if(timer==null)
-            timer = GameObject.Find("Timer");
-            if (invenIcon == null)
-            {
-                invenIcon = GameObject.Find("InventoryIcon");
-                invenIcon.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    uiManager.ShowInventory(callInven);
-                    if (callInven == 1)
-                        callInven = 0;
-                    else if (callInven == 0)
-                        callInven = 1;
-
-                });
-            }
-            
-            if ((uiManager == null) && (exitUI == null))
-            {
-             
-                var mainUI = GameObject.Find("MainUI");
-
-                uiManager = mainUI.GetComponent<UIManager>();
-
-                exitUI = mainUI.transform.GetChild(mainUI.transform.childCount - 1).gameObject;
-
-                exitUI.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    SceneManager.LoadScene("FieldMap", LoadSceneMode.Single);
-                });
-
-                exitUI.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    exitUI.SetActive(false);
-                });
-            }
-
-
-            StartTimer();
-            ExitIcon();
-            fade = uiManager.gameObject.GetComponent<Image>();
-            fadeColor = fade.color;
-
-            if (timeLimit > 0)
-            {
-                Time.timeScale = 1.0f;
-                fadeColor.a -= Time.deltaTime * 0.5f;
-                fade.color = fadeColor;
-
-            }
-
-        }
-        else
-        {
-            timeLimit = 300;
-        }
-
+        StartTimer();
     }
+
 
     private void ExitIcon()
     {
         //uiManager.ShowExitPanel();
-        
+
         GameObject.Find("ExitIcon").GetComponent<Button>().onClick.AddListener(() =>
         {
             exitUI.SetActive(true);
 
         });
-        
+
     }
 
-    private void StartTimer()
+    void StartTimer()
     {
      
         TimerCount();
@@ -113,6 +58,7 @@ public class GameManager : MonoBehaviour
         {
             fadeColor.a += Time.deltaTime * 4f;
             fade.color = fadeColor;
+
 
             GameObject.Find("ExitIcon").GetComponent<Button>().interactable = false;
             invenIcon.GetComponent<Button>().interactable = false;
@@ -127,13 +73,11 @@ public class GameManager : MonoBehaviour
 
             if (fade.color.a >= 250)
                 Time.timeScale = 0.0f;
-
-
         }
 
     }
 
-    private void TimerCount()
+     void TimerCount()
     {
         int minutes = (int)timeLimit / 60;
         int seconds = (int)timeLimit % 60;
@@ -147,5 +91,86 @@ public class GameManager : MonoBehaviour
         //timer.GetComponentInChildren<Text>().text = string.Format("{0:N0}",timeLimit);
     }
 
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        PlayerInventory playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
+
+        Debug.Log(playerInventory.inventoryItems.Count);
+        if (scene.name == "FieldMap")
+        {
+            inventoryItems.Clear();
+            inventoryItems = playerInventory.inventoryItems;
+        }
+
+        else if (scene.name != "Title")
+        {
+            timeLimit = 300;
+            playerInventory.inventoryItems.Clear();
+            playerInventory.inventoryItems = inventoryItems;
+            if (timer == null)
+                timer = GameObject.Find("Timer");
+            if (invenIcon == null)
+            {
+                invenIcon = GameObject.Find("InventoryIcon");
+                invenIcon.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    uiManager.ShowInventory(callInven);
+                    if (callInven == 1)
+                        callInven = 0;
+                    else if (callInven == 0)
+                        callInven = 1;
+
+                });
+            }
+
+            if ((uiManager == null) && (exitUI == null))
+            {
+
+                var mainUI = GameObject.Find("MainUI");
+
+                uiManager = mainUI.GetComponent<UIManager>();
+
+                exitUI = mainUI.transform.GetChild(mainUI.transform.childCount - 1).gameObject;
+
+                exitUI.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() =>
+                {
+
+                    SceneManager.LoadScene("FieldMap", LoadSceneMode.Single);
+
+                });
+
+                exitUI.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    exitUI.SetActive(false);
+                });
+            }
+
+
+            //StartTimer();
+            ExitIcon();
+            fade = uiManager.gameObject.GetComponent<Image>();
+            fadeColor = fade.color;
+
+            if (timeLimit > 0)
+            {
+                Time.timeScale = 1.0f;
+                fadeColor.a -= Time.deltaTime * 0.5f;
+                fade.color = fadeColor;
+
+            }
+        }
+
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
 }

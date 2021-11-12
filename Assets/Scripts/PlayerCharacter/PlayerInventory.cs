@@ -22,7 +22,7 @@ public class PlayerInventory : MonoBehaviour
     public int slotLimit;
 
     private int CallInven = 0;
-    public List<ItemSlotInfo> inventoryItems { get; private set; } = new List<ItemSlotInfo>();
+    public List<ItemSlotInfo> inventoryItems = new List<ItemSlotInfo>();
 
 
     private void Start()
@@ -30,13 +30,14 @@ public class PlayerInventory : MonoBehaviour
 
         itemSlotInfoData = CSVReader.WeaponRead("Weapon.csv");
         slotLimit = 10;
-        InitializeInventory();
+        //InitializeInventory();
     }
 
     private void Awake()
     {
         _PlayerCharacter = GetComponent<PlayerCharacter>();
-   
+        InitializeInventory();
+        //Debug.Log(inventoryItems.Count);
     }
 
     private void Update()
@@ -88,7 +89,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void InitializeInventory()
     {
-        //테스트용 아이템들
+        //테스트용 아이템
 
         inventoryItems.Add(new ItemSlotInfo("Lumber", "19004", 2));
         inventoryItems.Add(new ItemSlotInfo("Wood", "19002", 99));

@@ -19,6 +19,8 @@ public class FieldManager : MonoBehaviour
     private int dangerCount;
     private string star;
 
+
+
     private void Awake()
     {
    
@@ -43,7 +45,6 @@ public class FieldManager : MonoBehaviour
 
                 int.TryParse(stageDatas[index + 1][index].Danger, out dangerCount);
 
-
               for (int j=0;j< dangerCount;j++)
                 {
                     star += "☆";
@@ -55,7 +56,6 @@ public class FieldManager : MonoBehaviour
             startButton = GameObject.Find("AreaStart").GetComponent<Button>();
             startButton.onClick.AddListener(() =>
             {
-
                 SceneManager.LoadScene(stageName.text, LoadSceneMode.Single);//선택한 진입 지역에 해당하는 씬을 호출
             });
         }

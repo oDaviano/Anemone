@@ -5,8 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class ItemDrop : MonoBehaviour
 {
-    public PlayerCharacter playerCharacter;
-    public PlayerInventory inventory;
+    private PlayerCharacter playerCharacter;
+    private PlayerInventory inventory;
     Button ok;
     Button cancel;
     public int itemIndex;
@@ -15,8 +15,10 @@ public class ItemDrop : MonoBehaviour
     public int itemCount;
     public Image dropIcon;
 
-    private void Start()
+    void Start()
     {
+        playerCharacter = GameObject.Find("PlayerCharacter").GetComponent<PlayerCharacter>();
+        inventory = playerCharacter.playerInventory;
         slider = transform.GetChild(2).GetComponent<Slider>();
         dropCountText = transform.GetChild(0).GetComponent<Text>();
 
@@ -24,7 +26,7 @@ public class ItemDrop : MonoBehaviour
 
     void Awake()
     {
-        inventory = playerCharacter.playerInventory;
+       
         
         ok = transform.GetChild(3).GetComponent<Button>();
         cancel = transform.GetChild(4).GetComponent<Button>();

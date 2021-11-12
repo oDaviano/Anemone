@@ -313,7 +313,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 20, y: 35}
+  m_Size: {x: 15, y: 15}
   m_Direction: 0
 --- !u!114 &100535938
 MonoBehaviour:
@@ -551,7 +551,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 32, y: 35}
+  m_Size: {x: 15, y: 15}
   m_Direction: 0
 --- !u!114 &176612661
 MonoBehaviour:
@@ -908,6 +908,7 @@ GameObject:
   - component: {fileID: 322527802}
   - component: {fileID: 322527801}
   - component: {fileID: 322527803}
+  - component: {fileID: 322527804}
   m_Layer: 17
   m_Name: StandBack2
   m_TagString: Untagged
@@ -991,6 +992,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35001ef11a752eb4596bb6c36ba399db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &322527804
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322527800}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.0000019073486}
+  m_Size: {x: 10, y: 10}
+  m_Direction: 1
 --- !u!1 &427361906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,6 +1284,7 @@ MonoBehaviour:
     price: 0
     itemCount: 0
   slotLimit: 0
+  inventoryItems: []
 --- !u!114 &463468705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1572,6 +1590,7 @@ GameObject:
   - component: {fileID: 588601341}
   - component: {fileID: 588601340}
   - component: {fileID: 588601342}
+  - component: {fileID: 588601343}
   m_Layer: 17
   m_Name: StandBack1
   m_TagString: Untagged
@@ -1655,6 +1674,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35001ef11a752eb4596bb6c36ba399db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &588601343
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588601339}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 10, y: 10}
+  m_Direction: 1
 --- !u!1 &642837413
 GameObject:
   m_ObjectHideFlags: 0
@@ -2394,7 +2429,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 32, y: 35}
+  m_Size: {x: 15, y: 15}
   m_Direction: 0
 --- !u!114 &1091278545
 MonoBehaviour:
@@ -3155,7 +3190,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 32, y: 35}
+  m_Size: {x: 15, y: 15}
   m_Direction: 0
 --- !u!114 &1599641910
 MonoBehaviour:
@@ -3185,7 +3220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1687142864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3193,11 +3228,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687142863}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a488a866f9273bb4ebe73334a00dcea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryItems: []
 --- !u!4 &1687142865
 Transform:
   m_ObjectHideFlags: 0
@@ -4177,7 +4213,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 20, y: 35}
+  m_Size: {x: 15, y: 15}
   m_Direction: 0
 --- !u!114 &2133649842
 MonoBehaviour:
