@@ -21,11 +21,16 @@ public class TitleSceneManager : MonoBehaviour
     public void ButtonInitialize()
     {
         
-
         startButton.onClick.AddListener(() =>
         {
         
             SceneManager.LoadScene("FieldMap",LoadSceneMode.Single);
+        });
+
+        optionButton.onClick.AddListener(() =>
+        {
+            Debug.Log("옵션");
+
         });
 
         

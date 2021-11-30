@@ -10,7 +10,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private GameObject exitPanel;
 
-
     private Button openInvenButton;
     private ItemDrop itemDropPanel;
 

@@ -19,6 +19,8 @@ public class VirtualJoystick : MonoBehaviour,
 
 
     [SerializeField] private PlayerCharacter playerCharacter;
+    SpriteRenderer playerSprite;
+ 
 
     public RectTransform rectTransform { get; private set; }
 
@@ -28,12 +30,13 @@ public class VirtualJoystick : MonoBehaviour,
 
 
 
-    private void Awake()
+    void Awake()
     {
         spotLight = GameObject.Find("LightBase");
         joyStick = GameObject.Find("Joystick");
         rectTransform = transform as RectTransform;
         oldPos = _JoystickThumbImage.transform.position;
+        playerSprite = playerCharacter.GetComponent<SpriteRenderer>();
     }
 
 
@@ -44,13 +47,29 @@ public class VirtualJoystick : MonoBehaviour,
         Quaternion angleAxis = Quaternion.AngleAxis(-angle, Vector3.forward);
         Quaternion rotation = Quaternion.Slerp(transform.rotation, angleAxis, 10);
 
-
         if (sticktoChar != Vector2.zero)
         {
 
             spotLight.transform.rotation = rotation;
             playerCharacter.transform.Translate(sticktoChar.normalized*0.5f);
-         
+            if (angle > -45 && angle < 45)
+            {
+                playerSprite.sprite = Resources.Load<Sprite>("Images/Art/Character/PlayerBack");
+            }
+            else if (angle > 135 || angle < -135)
+            {
+                playerSprite.sprite = Resources.Load<Sprite>("Images/Art/Character/PlayerFront");
+            }
+            else if(angle<=-45 && angle>=-135)
+            {
+                playerSprite.sprite = Resources.Load<Sprite>("Images/Art/Character/PlayerLeft");
+            }
+            else if (angle >= 45 && angle <= 135)
+            {
+           
+                playerSprite.sprite = Resources.Load<Sprite>("Images/Art/Character/PlayerRight");
+            }
+
         }
     
     }

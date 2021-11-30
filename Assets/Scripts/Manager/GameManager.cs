@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private Image fade;
     private Color fadeColor;
+    [SerializeField] private PlayerPrefs optionUI;
+
 
     private int score;
     private float timeLimit = 300;
@@ -20,11 +22,14 @@ public class GameManager : MonoBehaviour
     private int callInven = 0;
 
     public List<ItemSlotInfo> inventoryItems = new List<ItemSlotInfo>();
+    
+
 
     void Awake()
     {
         instance = this;
         DontDestroyOnLoad(gameObject);
+        inventoryItems = DataController.Instance.gameData.inventoryItems;
 
     }
 
@@ -109,7 +114,6 @@ public class GameManager : MonoBehaviour
     {
         PlayerInventory playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
 
-        Debug.Log(playerInventory.inventoryItems.Count);
         if (scene.name == "FieldMap")
         {
             inventoryItems.Clear();
