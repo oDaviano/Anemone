@@ -57,7 +57,7 @@ public class DataController : MonoBehaviour
         string filePath = Application.persistentDataPath + GameDataFileName;
         if (File.Exists(filePath))
         {
-            Debug.Log("불러오기");
+          //  Debug.Log("불러오기");
             string fromJsonData = File.ReadAllText(filePath);
             _gameData = JsonUtility.FromJson<GameData>(fromJsonData);
            // gameManager.inventoryItems = gameData.inventoryItems;
@@ -76,7 +76,7 @@ public class DataController : MonoBehaviour
         string filePath = Application.persistentDataPath + GameDataFileName;
         File.WriteAllText(filePath, toJsonData);
 
-        Debug.Log("Saved");
+      //  Debug.Log("Saved");
         //Debug.Log(filePath);
     }
 

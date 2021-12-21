@@ -30,13 +30,13 @@ public class PlayerInventory : MonoBehaviour
 
         itemSlotInfoData = CSVReader.WeaponRead("Weapon.csv");
         slotLimit = 10;
-        //InitializeInventory();
+        InitializeInventory();
     }
 
     private void Awake()
     {
         _PlayerCharacter = GetComponent<PlayerCharacter>();
-        InitializeInventory();
+       // InitializeInventory();
         //Debug.Log(inventoryItems.Count);
     }
 

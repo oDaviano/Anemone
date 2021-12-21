@@ -9,13 +9,14 @@ public class VirtualJoystick : MonoBehaviour,
 {
     [SerializeField] private Image _JoystickThumbImage;
      private float _JoystickRadius = 110.0f;
-    //private float _Speed = 20.0f;
+    public float _Speed = 1.0f;
    // private float turnSpeed = 10.0f;
     private GameObject joyStick;
     private GameObject spotLight;
 
     Vector3 oldPos;
     Quaternion rotation;
+    public Vector2 direction;
 
 
     [SerializeField] private PlayerCharacter playerCharacter;
@@ -40,9 +41,11 @@ public class VirtualJoystick : MonoBehaviour,
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         Vector2 sticktoChar = new Vector2((_JoystickThumbImage.transform.position - oldPos).x, (_JoystickThumbImage.transform.position - oldPos).y);
+        direction = sticktoChar;
+
         float angle = Mathf.Atan2((_JoystickThumbImage.transform.position - oldPos).x, (_JoystickThumbImage.transform.position - oldPos).y) * Mathf.Rad2Deg;
         Quaternion angleAxis = Quaternion.AngleAxis(-angle, Vector3.forward);
         Quaternion rotation = Quaternion.Slerp(transform.rotation, angleAxis, 10);
@@ -51,7 +54,7 @@ public class VirtualJoystick : MonoBehaviour,
         {
 
             spotLight.transform.rotation = rotation;
-            playerCharacter.transform.Translate(sticktoChar.normalized*0.5f);
+            playerCharacter.transform.Translate(sticktoChar.normalized*_Speed);
             if (angle > -45 && angle < 45)
             {
                 playerSprite.sprite = Resources.Load<Sprite>("Images/Art/Character/PlayerBack");

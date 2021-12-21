@@ -24,14 +24,24 @@ public sealed class PlayerCharacter : MonoBehaviour
     public float evasion;
 
     private Vector3 oldPos;
+    private float oldPosX;
+    private float oldPosY;
+    Rigidbody2D rigidbody;
+
+    RaycastHit2D hit;
+
+    float stayCount;
 
 
     public PlayerSearch playerSearch => _PlayerSearch;
-    public PlayerMovement playerMovement { get; private set; }
+    public VirtualJoystick playerMovement;
 
     void Start()
     {
-      //  DontDestroyOnLoad(gameObject);
+        playerMovement = GameObject.Find("MoveButton").GetComponent<VirtualJoystick>();
+        rigidbody = GetComponent<Rigidbody2D>();
+        //  DontDestroyOnLoad(gameObject);
+
     }
 
     private void Awake()
@@ -49,20 +59,45 @@ public sealed class PlayerCharacter : MonoBehaviour
         crit = 0.1f;
         speed = 3;
         evasion = 0.3f;
-        playerMovement = GetComponent<PlayerMovement>();
+ 
     }
-    public void OnTriggerEnter2D(Collider2D collision)
+
+
+    private void FixedUpdate()
     {
-       oldPos = transform.position;
-   
-    }
-    public void OnTriggerStay2D(Collider2D collision)
-    {
-        if ((collision.gameObject.layer == 17) && 
-            Vector2.Distance(collision.transform.position, gameObject.transform.position)< Vector2.Distance(collision.transform.position, oldPos))
+        //Debug.Log(playerMovement.direction.normalized);
+        //Debug.Log(transform.position);
+        hit = Physics2D.Raycast(transform.position,playerMovement.direction, 20.0f, 1 << 17);
+        Debug.DrawRay(transform.position, playerMovement.direction.normalized*30.0f , Color.red);
+        // Debug.Log(hit.collider);
+
+
+        if (hit)
+
         {
-            transform.position = oldPos;
+            playerMovement._Speed = 0;
+
+        }
+        else
+        {
+            playerMovement._Speed = 1.5f;
         }
     }
+
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+       
+
+
+    }
+
+
+
+
+
+
+
+
+
 
 }

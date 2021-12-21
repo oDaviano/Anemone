@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float _Speed = 20.0f;
+    public float _Speed = 20.0f;
     private float turnSpeed = 10.0f;
     Vector3 oldPos;
     Rigidbody rigidbody;
