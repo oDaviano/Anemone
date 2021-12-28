@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     private Color fadeColor;
     [SerializeField] private PlayerPrefs optionUI;
 
+    Camera camera;
+
 
     private int score;
     private float timeLimit = 300;
@@ -35,7 +37,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (timeLimit > 0)
+    
+        if (timeLimit > 0 && fade!=null)
         {
             Time.timeScale = 1.0f;
             fadeColor.a -= Time.deltaTime * 0.5f;
@@ -116,6 +119,7 @@ public class GameManager : MonoBehaviour
 
         if (scene.name == "FieldMap")
         {
+            camera = GameObject.Find("Main Camrea").GetComponent<Camera>();
             inventoryItems.Clear();
             inventoryItems = playerInventory.inventoryItems;
         }
@@ -132,11 +136,12 @@ public class GameManager : MonoBehaviour
                 invenIcon = GameObject.Find("InventoryIcon");
                 invenIcon.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    uiManager.ShowInventory(callInven);
                     if (callInven == 1)
                         callInven = 0;
                     else if (callInven == 0)
                         callInven = 1;
+                    uiManager.ShowInventory(callInven);
+         
 
                 });
             }

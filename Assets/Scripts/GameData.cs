@@ -7,8 +7,6 @@ using System;
 public class GameData
 {
     public int sound = 1;
-
-
     public List<ItemSlotInfo> inventoryItems = new List<ItemSlotInfo>();
 
 

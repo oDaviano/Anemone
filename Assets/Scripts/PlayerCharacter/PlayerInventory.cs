@@ -47,6 +47,7 @@ public class PlayerInventory : MonoBehaviour
         weaponType = equipedWeaponInfo.type;
        // GetComponent<Animator>().SetFloat("WeaponType",weaponType);
         RemoveEmpty();
+        /*
         if (Input.GetKeyDown(KeyCode.I))
         {
             gameUIInstance.ShowInventory(CallInven);
@@ -62,6 +63,7 @@ public class PlayerInventory : MonoBehaviour
                     break;
             }
         }
+        */
 
         /*
         if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() )
@@ -89,18 +91,20 @@ public class PlayerInventory : MonoBehaviour
 
     private void InitializeInventory()
     {
-        //테스트용 아이템
+      /*
+        if (inventoryItems.Count <= 0)
+        {
+            inventoryItems.Add(new ItemSlotInfo("Lumber", "19004", 2));
+            inventoryItems.Add(new ItemSlotInfo("Wood", "19002", 99));
+            inventoryItems.Add(new ItemSlotInfo("OAE", "19001", 99));
+            inventoryItems.Add(new ItemSlotInfo("Leather", "19005", 99));
+            inventoryItems.Add(new ItemSlotInfo("Rubber", "19006", 99));
+            inventoryItems.Add(new ItemSlotInfo("KitchenKnife", "10007", 1));
+            inventoryItems.Add(new ItemSlotInfo("Pistol", "10010", 1));
+            equipedWeaponInfo = (new WeaponInfo("Pistol", "10010", 1, 3, 5f, 30, 40, 45, 1));
 
-        inventoryItems.Add(new ItemSlotInfo("Lumber", "19004", 2));
-        inventoryItems.Add(new ItemSlotInfo("Wood", "19002", 99));
-        inventoryItems.Add(new ItemSlotInfo("OAE", "19001", 99));
-        inventoryItems.Add(new ItemSlotInfo("Leather", "19005", 99));
-        inventoryItems.Add(new ItemSlotInfo("Rubber", "19006", 99));
-        inventoryItems.Add(new ItemSlotInfo("KitchenKnife", "10007", 1));
-        inventoryItems.Add(new ItemSlotInfo("Pistol", "10010", 1));
-        equipedWeaponInfo = (new WeaponInfo("Pistol", "10010", 1, 3, 5f, 30, 40, 45, 1));
-
-
+        }
+        */
     }
 
 

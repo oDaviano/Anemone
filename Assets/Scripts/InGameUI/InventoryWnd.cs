@@ -41,7 +41,7 @@ public class InventoryWnd : MonoBehaviour
 
             if (i < inventory.inventoryItems.Count)
            {
-                string path = $"Images/Icons/{inventory.inventoryItems[index].itemName}";
+                string path = $"Images/Icons/Items/{inventory.inventoryItems[index].itemName}";
                 slot[i].GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
                 Color tempColor = slot[i].GetComponent<Image>().color;
                 tempColor = Color.white;

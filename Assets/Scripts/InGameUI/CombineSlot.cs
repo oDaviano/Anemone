@@ -56,13 +56,13 @@ public class CombineSlot : MonoBehaviour
     //재료&결과물 아이콘, 재료 요구량
     private void SetCombineData()
     {
-        transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Icons/{combineInfo.resultName}");
-        transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/{combineInfo.m1Name}");
-        transform.GetChild(2).GetChild(1).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/{combineInfo.m2Name}");
-        transform.GetChild(2).GetChild(2).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/{combineInfo.m3Name}");
+        transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.resultName}");
+        transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m1Name}");
+        transform.GetChild(2).GetChild(1).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m2Name}");
+        transform.GetChild(2).GetChild(2).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m3Name}");
         if (combineInfo.m4Name != "null")
         {
-            transform.GetChild(2).GetChild(3).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/{combineInfo.m4Name}");
+            transform.GetChild(2).GetChild(3).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m4Name}");
         }
         else
         {

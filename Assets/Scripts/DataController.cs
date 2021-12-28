@@ -54,6 +54,7 @@ public class DataController : MonoBehaviour
     }
     public void LoadGameData()
     {
+        //   string filePath = Application.persistentDataPath + GameDataFileName;
         string filePath = Application.persistentDataPath + GameDataFileName;
         if (File.Exists(filePath))
         {
@@ -71,7 +72,8 @@ public class DataController : MonoBehaviour
     }
     public void SaveGameData()
     {
-        gameData.inventoryItems = GameManager.instance.inventoryItems ;
+      //  gameData.inventoryItems.Clear();
+        gameData.inventoryItems = GameManager.instance.inventoryItems;
         string toJsonData = JsonUtility.ToJson(gameData);
         string filePath = Application.persistentDataPath + GameDataFileName;
         File.WriteAllText(filePath, toJsonData);
