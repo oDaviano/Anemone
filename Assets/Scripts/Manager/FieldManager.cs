@@ -19,6 +19,9 @@ public class FieldManager : MonoBehaviour
 
     private GameObject target;
 
+    [SerializeField] Button zoomIn;
+    [SerializeField] Button zoomOut;
+
 
     [SerializeField] GameObject map;
     [SerializeField] Button back;
@@ -44,55 +47,78 @@ public class FieldManager : MonoBehaviour
         {
 
             Camera.main.transform.position = cameraDefaultPos;
-            for(int i=0;i<5;i++)
+            for (int i = 0; i < 5; i++)
             {
                 areaButtons[i].gameObject.SetActive(true);
+                zoomIn.gameObject.SetActive(true);
+                zoomOut.gameObject.SetActive(true);
+
             }
+            target = null;
             stageInfo.SetActive(false);
 
         });
 
-        ButtonInitialize();
+        zoomIn.onClick.AddListener(() =>
+        {
 
 
+            Camera.main.transform.position = cameraDefaultPos + new Vector3(0, 0, 15);
+
+        });
+
+        zoomOut.onClick.AddListener(() =>
+        {
+
+            Camera.main.transform.position = cameraDefaultPos;
+
+        });
+        // ButtonInitialize();
     }
     private void Update()
     {
         startButton.onClick.AddListener(() =>
         {
 
-            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);//선택한 진입 지역에 해당하는 씬을 호출
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);//선택한 지역에 해당하는 씬을 호출
         });
+
+        CastRay();
+        if (target != null)
+        {
+            stageInfo.SetActive(true);
+            SetStageInfo();
+        }
     }
 
     void CastRay()
     {
-        target = null;
-        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Ray2D ray = new Ray2D(pos, Vector2.zero);
-     
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
-        if (hit.collider != null)
-        {
-            target = hit.collider.gameObject;
-            Camera.main.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, -10);
-            back.gameObject.SetActive(false);
-        }
+        Vector2 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+        Ray2D ray = new Ray2D(pos, Vector2.zero);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+        if (Input.GetMouseButtonDown(0))
+            if (hit.collider != null)
+            {
+                target = hit.collider.gameObject;
+
+                Camera.main.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, -10);
+                zoomIn.gameObject.SetActive(false);
+                zoomOut.gameObject.SetActive(false);
+            }
 
     }
 
     void SetStageInfo()
     {
         List<Dictionary<int, StageDatas>> stageDatas = CSVReader.Stage("Stage.csv");//Stage.csv 파일에서 스테이지 데이터 호출
-
         int index = target.transform.GetSiblingIndex();
-        Debug.Log(index);
-        stageInfo.SetActive(true);
+ 
         star = "";
 
         stageName = GameObject.Find("StageName").GetComponent<Text>();
         stageDiff = GameObject.Find("StageDiff").GetComponent<Text>();
+        sceneName = areaButtons[index].name;
         stageName.text = " " + areaButtons[index].name;//스테이지 정보 창에 선택한 버튼의 인덱스에 따라 csv 파일을 
 
         int.TryParse(stageDatas[index + 1][index].Danger, out dangerCount);
@@ -102,24 +128,13 @@ public class FieldManager : MonoBehaviour
             if (j < dangerCount)
                 star += "★";
             else
-
                 star += "☆";
-
         }
         stageDiff.text = $"  아이템: {stageDatas[index + 1][index].stageDifficulty}\n 위험도: {star}";//참조한 정보 출력
 
         // c# 클로져 기능
-
-        /*
-        startButton = GameObject.Find("AreaStart").GetComponent<Button>();
-        startButton.onClick.AddListener(() =>
-        {
-            SceneManager.LoadScene(stageName.text, LoadSceneMode.Single);//선택한 진입 지역에 해당하는 씬을 호출
-        });
-        */
-
-
     }
+
 
     public void ButtonInitialize()
     {
@@ -137,11 +152,11 @@ public class FieldManager : MonoBehaviour
                 star = "";
 
                 stageName = GameObject.Find("StageName").GetComponent<Text>();
-        
+
                 stageDiff = GameObject.Find("StageDiff").GetComponent<Text>();
                 sceneName = areaButtons[index].name;
                 stageName.text = " " + areaButtons[index].name;//스테이지 정보 창에 선택한 버튼의 인덱스에 따라 csv 파일을 
-         
+
                 int.TryParse(stageDatas[index + 1][index].Danger, out dangerCount);
 
                 for (int j = 0; j < 5; j++)
@@ -160,11 +175,12 @@ public class FieldManager : MonoBehaviour
 
             });
             // c# 클로져 기능
-            
-         //   startButton = GameObject.Find("AreaStart").GetComponent<Button>();
-        
-            
+
+            //   startButton = GameObject.Find("AreaStart").GetComponent<Button>();
+
+
         }
     }
+
 
 }

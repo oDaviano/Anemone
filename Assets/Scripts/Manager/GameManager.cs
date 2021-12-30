@@ -29,6 +29,12 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
         DontDestroyOnLoad(gameObject);
         inventoryItems = DataController.Instance.gameData.inventoryItems;
@@ -103,6 +109,7 @@ public class GameManager : MonoBehaviour
             timer.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Art/UI/Button/Timer_Button_timeover");
             timer.GetComponentInChildren<Text>().color = new Color32(255, 0, 50, 255);
         }
+        if(timer!=null)
         timer.GetComponentInChildren<Text>().text = (minutes.ToString() + " : " + (seconds < 10 ? 0 + seconds.ToString() : seconds.ToString()));
         //timer.GetComponentInChildren<Text>().text = string.Format("{0:N0}",timeLimit);
     }
