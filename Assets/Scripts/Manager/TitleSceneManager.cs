@@ -8,14 +8,14 @@ using UnityEngine.EventSystems;
 public class TitleSceneManager : MonoBehaviour
 {
 
-    [SerializeField] private Button startButton;
-    [SerializeField] private Button optionButton;
-    [SerializeField] private Button creditButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] Button startButton;
+    [SerializeField] Button optionButton;
+    [SerializeField] GameObject optionWnd;
 
 
-    private void Awake()
+    void Awake()
     {
+
         ButtonInitialize();
     }
     public void ButtonInitialize()
@@ -23,28 +23,25 @@ public class TitleSceneManager : MonoBehaviour
         
         startButton.onClick.AddListener(() =>
         {
-        
+
+            GameManager.instance.playSound("Button");
             SceneManager.LoadScene("FieldMap",LoadSceneMode.Single);
+
         });
 
         optionButton.onClick.AddListener(() =>
         {
-            Debug.Log("옵션");
+            GameManager.instance.playSound("Button");
+            optionWnd.SetActive(true);
 
         });
+
+
+
 
         
     }
 
-    private void Update()
-    {
-       
-      // if (RectTransformUtility.RectangleContainsScreenPoint((RectTransform)startButton.gameObject.transform, cursorPos.transform.position))
-      //  {
-        //    Debug.Log("act");
-           // cursorPos.transform.position = startButton.transform.position;
-       // }
-    }
 
 
  

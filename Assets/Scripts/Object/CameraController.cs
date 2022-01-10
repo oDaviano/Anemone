@@ -9,6 +9,11 @@ public class CameraController : MonoBehaviour
     private Vector3 MouseStart;
     private Vector3 derp;
 
+    float minX = -5.1f;
+    float minY =-4.1f;
+    float maxX = 8.1f;
+    float maxY = 8.0f;
+
     void Start()
     {
         dist = transform.position.z;  // Distance camera is above map
@@ -34,10 +39,10 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (transform.position.x < -5.1f) transform.position = new Vector3(-5.1f, transform.position.y, transform.position.z);
-        else if(transform.position.x>8.1f) transform.position = new Vector3(8.1f, transform.position.y, transform.position.z);
-        if (transform.position.y < -4.2f)   transform.position = new Vector3(transform.position.x, -4.3f, transform.position.z);
-         else if(transform.position.y>8f) transform.position = new Vector3(transform.position.x,8f, transform.position.z);
+        if (transform.position.x < minX) transform.position = new Vector3(minX, transform.position.y, transform.position.z);
+        else if(transform.position.x>maxX) transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
+        if (transform.position.y < minY)   transform.position = new Vector3(transform.position.x, minY, transform.position.z);
+         else if(transform.position.y>maxY) transform.position = new Vector3(transform.position.x,maxY, transform.position.z);
 
 
     }

@@ -32,55 +32,46 @@ public class DataController : MonoBehaviour
         }
     }
     public string GameDataFileName = "DataFile.json";
-    public GameData _gameData;
+    public GameData gameData;
+
+    /*
     public GameData gameData
     {
         get
         {
-            if(_gameData == null)
-            {
-                LoadGameData();
-               // SaveGameData();
-            }
+
+
             return _gameData;
         }
     }
-
-    private void Start()
-    {
-       // gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        LoadGameData();
-       // SaveGameData();
-    }
+    */
     public void LoadGameData()
     {
-        //   string filePath = Application.persistentDataPath + GameDataFileName;
+        Debug.Log("Loaded");
         string filePath = Application.persistentDataPath + GameDataFileName;
         if (File.Exists(filePath))
         {
-          //  Debug.Log("불러오기");
             string fromJsonData = File.ReadAllText(filePath);
-            _gameData = JsonUtility.FromJson<GameData>(fromJsonData);
-           // gameManager.inventoryItems = gameData.inventoryItems;
-        
+            gameData = JsonUtility.FromJson<GameData>(fromJsonData);
         }
         else
         {
-            Debug.Log("새 파일 생성");
-            _gameData = new GameData();
+            gameData = new GameData();
         }
     }
     public void SaveGameData()
     {
-      //  gameData.inventoryItems.Clear();
+        gameData.sound = GameManager.instance.soundPlay;
+        gameData.day = GameManager.instance.day;
         gameData.inventoryItems = GameManager.instance.inventoryItems;
+        gameData.conBoxList = GameManager.instance.conBoxList;
+
         string toJsonData = JsonUtility.ToJson(gameData);
         string filePath = Application.persistentDataPath + GameDataFileName;
         File.WriteAllText(filePath, toJsonData);
 
-      //  Debug.Log("Saved");
-        //Debug.Log(filePath);
     }
+
 
     private void OnApplicationQuit()
     {

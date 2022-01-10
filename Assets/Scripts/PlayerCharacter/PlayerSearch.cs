@@ -101,7 +101,7 @@ public class PlayerSearch : MonoBehaviour
 
                 if (hasItem)
                 {
-                    path = $"Images/Icons/{BData.boxItems[i].itemName}";
+                    path = $"Images/Icons/Items/{BData.boxItems[i].itemName}";
                     slotImage.sprite = Resources.Load<Sprite>(path);
                     tempColor = Color.white;
                 }

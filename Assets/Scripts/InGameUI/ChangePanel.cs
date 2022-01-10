@@ -29,6 +29,7 @@ public class ChangePanel : MonoBehaviour
             extendButton = GameObject.Find($"SlotLock{playerInventory.slotLimit / 5 - 1}").GetComponent<Button>();
             extendButton.onClick.AddListener(() =>
             {
+                GameManager.instance.playSound("Button");
                 extendUI.SetActive(true);
 
             });
@@ -40,6 +41,7 @@ public class ChangePanel : MonoBehaviour
     {
         invenButton.onClick.AddListener(() =>
         {
+            GameManager.instance.playSound("Button");
             invenButton.gameObject.transform.GetChild(0).GetComponent<Image>().color = Color.white;
             invenButton.gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.black;
 
@@ -52,6 +54,7 @@ public class ChangePanel : MonoBehaviour
 
         combineButton.onClick.AddListener(() =>
         {
+            GameManager.instance.playSound("Button");
             combineButton.gameObject.transform.GetChild(0).GetComponent<Image>().color = Color.white;
             combineButton.gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.black;
 

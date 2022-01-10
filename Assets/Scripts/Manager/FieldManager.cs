@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 public class FieldManager : MonoBehaviour
 {
-    int count = 0;
+   // int count = 0;
 
     [SerializeField] Button[] areaButtons;//지역 진입 버튼
     [SerializeField] GameObject[] areas;
@@ -21,7 +21,6 @@ public class FieldManager : MonoBehaviour
 
     [SerializeField] Button zoomIn;
     [SerializeField] Button zoomOut;
-
 
     [SerializeField] GameObject map;
     [SerializeField] Button back;
@@ -45,7 +44,7 @@ public class FieldManager : MonoBehaviour
 
         back.onClick.AddListener(() =>
         {
-
+            GameManager.instance.playSound("Button");
             Camera.main.transform.position = cameraDefaultPos;
             for (int i = 0; i < 5; i++)
             {
@@ -56,20 +55,21 @@ public class FieldManager : MonoBehaviour
             }
             target = null;
             stageInfo.SetActive(false);
+            startButton.gameObject.SetActive(false);
 
         });
 
         zoomIn.onClick.AddListener(() =>
         {
 
-
+            GameManager.instance.playSound("Button");
             Camera.main.transform.position = cameraDefaultPos + new Vector3(0, 0, 15);
 
         });
 
         zoomOut.onClick.AddListener(() =>
         {
-
+            GameManager.instance.playSound("Button");
             Camera.main.transform.position = cameraDefaultPos;
 
         });
@@ -79,7 +79,7 @@ public class FieldManager : MonoBehaviour
     {
         startButton.onClick.AddListener(() =>
         {
-
+            GameManager.instance.playSound("Button");
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);//선택한 지역에 해당하는 씬을 호출
         });
 
@@ -87,6 +87,7 @@ public class FieldManager : MonoBehaviour
         if (target != null)
         {
             stageInfo.SetActive(true);
+            startButton.gameObject.SetActive(true);
             SetStageInfo();
         }
     }
@@ -100,6 +101,7 @@ public class FieldManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             if (hit.collider != null)
             {
+                GameManager.instance.playSound("Button");
                 target = hit.collider.gameObject;
 
                 Camera.main.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, -10);
@@ -175,9 +177,6 @@ public class FieldManager : MonoBehaviour
 
             });
             // c# 클로져 기능
-
-            //   startButton = GameObject.Find("AreaStart").GetComponent<Button>();
-
 
         }
     }

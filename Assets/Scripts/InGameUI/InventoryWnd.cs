@@ -21,7 +21,6 @@ public class InventoryWnd : MonoBehaviour
     protected void Awake()
     {
         playerCharacter = GameObject.Find("PlayerCharacter").GetComponent<PlayerCharacter>();
-        ;
         inventory = playerCharacter.playerInventory;
     }
 

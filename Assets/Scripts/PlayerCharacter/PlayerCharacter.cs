@@ -40,7 +40,6 @@ public sealed class PlayerCharacter : MonoBehaviour
     {
         playerMovement = GameObject.Find("MoveButton").GetComponent<VirtualJoystick>();
         rigidbody = GetComponent<Rigidbody2D>();
-        //  DontDestroyOnLoad(gameObject);
 
     }
 

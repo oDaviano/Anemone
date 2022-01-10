@@ -8,13 +8,9 @@ public struct ItemSlotInfo
 {
     public string itemName;
     public string itemCode;
-
     public int itemCount;
-    
-
 
     public bool isEmpty => string.IsNullOrEmpty(itemCode);
-
 
     public ItemSlotInfo(string itemName, string itemCode, int itemCount = 1)
     {

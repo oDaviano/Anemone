@@ -15,35 +15,45 @@ public class GameManager : MonoBehaviour
     private Color fadeColor;
     [SerializeField] private PlayerPrefs optionUI;
 
-    Camera camera;
-
-
     private int score;
-    private float timeLimit = 300;
-    private int dateCount = 0;
+    int maxTimeLimit = 300;
+    private float timeLimit;
+    private int dateCount;
     private int callInven = 0;
 
+    public int day;
+    public int soundPlay;
+    PlayerInventory playerInventory;
+   GameObject stage;
+
     public List<ItemSlotInfo> inventoryItems = new List<ItemSlotInfo>();
+    public List<BoxRemains> conBoxList;
+    public List<BoxRemains> apartBoxList;
+
+    public AudioClip buttonSound;
+    AudioSource audioSource;
     
 
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         if (instance != null)
         {
             Destroy(gameObject);
             return;
         }
-
         instance = this;
         DontDestroyOnLoad(gameObject);
-        inventoryItems = DataController.Instance.gameData.inventoryItems;
-
+  
+        stage = GameObject.FindGameObjectWithTag("Stage");
     }
 
     void Update()
     {
-    
+     audioSource.volume = soundPlay;
+
+
         if (timeLimit > 0 && fade!=null)
         {
             Time.timeScale = 1.0f;
@@ -51,17 +61,30 @@ public class GameManager : MonoBehaviour
             fade.color = fadeColor;
 
         }
-        StartTimer();
 
+        //Scene scene = SceneManager.GetActiveScene();
+        if(stage!=null)
+        StartTimer();
     }
 
+   public void playSound(string action)
+    {
+        switch(action)
+        {
+            case "Button"  :audioSource.clip = buttonSound;
+                break;
+        }
+        audioSource.Play();
 
+
+    }
     private void ExitIcon()
     {
         //uiManager.ShowExitPanel();
 
         GameObject.Find("ExitIcon").GetComponent<Button>().onClick.AddListener(() =>
         {
+            instance.playSound("Button");
             exitUI.SetActive(true);
 
         });
@@ -70,18 +93,23 @@ public class GameManager : MonoBehaviour
 
     void StartTimer()
     {
-     
         TimerCount();
         timeLimit -= Time.deltaTime;
         if (timeLimit > 0)
+            if(exitUI!=null)
             exitUI.transform.GetChild(0).GetComponent<Text>().text = "탐색을 중단하고 지도로 돌아가시겠습니까?";
 
         if (timeLimit <= 0)
         {
             fadeColor.a += Time.deltaTime * 4f;
             fade.color = fadeColor;
-
-
+            for (int i = 0; i < stage.transform.childCount; i++)
+            {
+                BoxRemains tempRemains = new BoxRemains(stage.transform.GetChild(i).GetComponent<BoxData>().boxItems);
+                conBoxList.Add(tempRemains);
+        
+            }
+            DataController.Instance.SaveGameData();
             GameObject.Find("ExitIcon").GetComponent<Button>().interactable = false;
             invenIcon.GetComponent<Button>().interactable = false;
 
@@ -99,43 +127,51 @@ public class GameManager : MonoBehaviour
 
     }
 
-     void TimerCount()
+    void TimerCount()
     {
         int minutes = (int)timeLimit / 60;
         int seconds = (int)timeLimit % 60;
 
-        if (timeLimit <= 60)
+        if (timer != null)
         {
-            timer.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Art/UI/Button/Timer_Button_timeover");
-            timer.GetComponentInChildren<Text>().color = new Color32(255, 0, 50, 255);
+            if (timeLimit <= 60)
+            {
+                timer.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Art/UI/Button/Timer_Button_timeover");
+                timer.GetComponentInChildren<Text>().color = new Color32(255, 0, 50, 255);
+            }
+
+
+            timer.GetComponentInChildren<Text>().text = (minutes.ToString() + " : " + (seconds < 10 ? 0 + seconds.ToString() : seconds.ToString()));
         }
-        if(timer!=null)
-        timer.GetComponentInChildren<Text>().text = (minutes.ToString() + " : " + (seconds < 10 ? 0 + seconds.ToString() : seconds.ToString()));
-        //timer.GetComponentInChildren<Text>().text = string.Format("{0:N0}",timeLimit);
+    
     }
 
-
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        PlayerInventory playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
-
         if (scene.name == "FieldMap")
         {
-            camera = GameObject.Find("Main Camrea").GetComponent<Camera>();
+            /*
             inventoryItems.Clear();
             inventoryItems = playerInventory.inventoryItems;
+            */
+
         }
 
         else if (scene.name != "Title")
         {
-            timeLimit = 300;
-            playerInventory.inventoryItems.Clear();
-            playerInventory.inventoryItems = inventoryItems;
+            playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
+            stage = GameObject.FindGameObjectWithTag("Stage");
+            timeLimit = maxTimeLimit;
+
+            playerInventory.inventoryItems = new List<ItemSlotInfo>();
+            conBoxList = new List<BoxRemains>();
+
+            DataController.Instance.LoadGameData();
+            playerInventory.inventoryItems = DataController.Instance.gameData.inventoryItems;
+            if(stage.name == "Convenience")
+            conBoxList = DataController.Instance.gameData.conBoxList;
+
             if (timer == null)
                 timer = GameObject.Find("Timer");
             if (invenIcon == null)
@@ -143,19 +179,18 @@ public class GameManager : MonoBehaviour
                 invenIcon = GameObject.Find("InventoryIcon");
                 invenIcon.GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    instance.playSound("Button");
                     if (callInven == 1)
                         callInven = 0;
                     else if (callInven == 0)
                         callInven = 1;
                     uiManager.ShowInventory(callInven);
-         
 
                 });
             }
 
             if ((uiManager == null) && (exitUI == null))
             {
-
                 var mainUI = GameObject.Find("MainUI");
 
                 uiManager = mainUI.GetComponent<UIManager>();
@@ -164,28 +199,44 @@ public class GameManager : MonoBehaviour
 
                 exitUI.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    instance.playSound("Button");
+                    day += 1;
+                    if(stage.name == "Convenience")
+                    for (int i = 0; i < stage.transform.childCount; i++)
+                    {
+                        BoxRemains tempRemains = new BoxRemains(stage.transform.GetChild(i).GetComponent<BoxData>().boxItems);
+                        conBoxList.Add(tempRemains);
 
+                    }
+
+                    inventoryItems.Clear();
+                    inventoryItems = playerInventory.inventoryItems;
+
+                    DataController.Instance.SaveGameData();
                     SceneManager.LoadScene("FieldMap", LoadSceneMode.Single);
+          
 
                 });
 
                 exitUI.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    instance.playSound("Button");
                     exitUI.SetActive(false);
                 });
             }
-
 
             //StartTimer();
             ExitIcon();
             fade = uiManager.gameObject.GetComponent<Image>();
             fadeColor = fade.color;
-
    
         }
 
     }
-
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
