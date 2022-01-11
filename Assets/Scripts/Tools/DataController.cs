@@ -47,7 +47,6 @@ public class DataController : MonoBehaviour
     */
     public void LoadGameData()
     {
-        Debug.Log("Loaded");
         string filePath = Application.persistentDataPath + GameDataFileName;
         if (File.Exists(filePath))
         {
@@ -63,6 +62,7 @@ public class DataController : MonoBehaviour
     {
         gameData.sound = GameManager.instance.soundPlay;
         gameData.day = GameManager.instance.day;
+        gameData.slotLimit = GameManager.instance.slotLimit;
         gameData.inventoryItems = GameManager.instance.inventoryItems;
         gameData.conBoxList = GameManager.instance.conBoxList;
 

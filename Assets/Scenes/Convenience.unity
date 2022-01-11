@@ -1640,6 +1640,9 @@ MonoBehaviour:
     hit: 0
     price: 0
     itemCount: 0
+  slotLock1: {fileID: 4894127596728683880}
+  slotLock2: {fileID: 4894127595854302334}
+  slotLock3: {fileID: 4894127595827632099}
   slotLimit: 0
   inventoryItems: []
 --- !u!114 &463468705
@@ -2743,6 +2746,7 @@ MonoBehaviour:
   gameData:
     sound: 0
     day: 1
+    slotLimit: 10
     inventoryItems: []
     conBoxList: []
 --- !u!4 &1008761523
@@ -3978,7 +3982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1687142864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3986,13 +3990,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687142863}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a488a866f9273bb4ebe73334a00dcea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   day: 0
   soundPlay: 0
+  slotLimit: 0
   inventoryItems: []
   conBoxList: []
   apartBoxList: []
@@ -4018,7 +4023,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687142863}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -7286,7 +7291,7 @@ GameObject:
   - component: {fileID: 7529092294760124134}
   - component: {fileID: 7761162123396191592}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ExitCancel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15817,7 +15822,7 @@ GameObject:
   - component: {fileID: 4894127596306699649}
   - component: {fileID: 4894127596306699648}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

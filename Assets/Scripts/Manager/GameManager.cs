@@ -23,10 +23,11 @@ public class GameManager : MonoBehaviour
 
     public int day;
     public int soundPlay;
+    public int slotLimit;
     PlayerInventory playerInventory;
    GameObject stage;
 
-    public List<ItemSlotInfo> inventoryItems = new List<ItemSlotInfo>();
+    public List<ItemSlotInfo> inventoryItems;
     public List<BoxRemains> conBoxList;
     public List<BoxRemains> apartBoxList;
 
@@ -34,10 +35,9 @@ public class GameManager : MonoBehaviour
     AudioSource audioSource;
     
 
-
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+
         if (instance != null)
         {
             Destroy(gameObject);
@@ -45,7 +45,19 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
+        audioSource = GetComponent<AudioSource>();
+        DataController.Instance.LoadGameData();
+
+        inventoryItems = new List<ItemSlotInfo>();
+        inventoryItems = DataController.Instance.gameData.inventoryItems;
   
+
+        conBoxList = new List<BoxRemains>();
+        conBoxList = DataController.Instance.gameData.conBoxList;
+
+        day = DataController.Instance.gameData.day;
+        slotLimit = DataController.Instance.gameData.slotLimit;
+        soundPlay = DataController.Instance.gameData.sound;
         stage = GameObject.FindGameObjectWithTag("Stage");
     }
 
@@ -90,7 +102,6 @@ public class GameManager : MonoBehaviour
         });
 
     }
-
     void StartTimer()
     {
         TimerCount();
@@ -126,7 +137,6 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
     void TimerCount()
     {
         int minutes = (int)timeLimit / 60;
@@ -145,32 +155,23 @@ public class GameManager : MonoBehaviour
         }
     
     }
-
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "FieldMap")
+        //씬이 타이틀이나 필드가 아닐 때 = 에이리어
+      if ((scene.name != "FieldMap") && (scene.name != "Title"))
         {
-            /*
-            inventoryItems.Clear();
-            inventoryItems = playerInventory.inventoryItems;
-            */
-
-        }
-
-        else if (scene.name != "Title")
-        {
+            
             playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
             stage = GameObject.FindGameObjectWithTag("Stage");
             timeLimit = maxTimeLimit;
-
-            playerInventory.inventoryItems = new List<ItemSlotInfo>();
-            conBoxList = new List<BoxRemains>();
-
-            DataController.Instance.LoadGameData();
+            playerInventory.slotLimit = slotLimit;
             playerInventory.inventoryItems = DataController.Instance.gameData.inventoryItems;
-            if(stage.name == "Convenience")
-            conBoxList = DataController.Instance.gameData.conBoxList;
+
+            for (int i = 0; i < stage.transform.childCount; i++)
+            {
+                stage.transform.GetChild(i).GetComponent<BoxData>().boxItems = DataController.Instance.gameData.conBoxList[i].conBox;
+
+            }
 
             if (timer == null)
                 timer = GameObject.Find("Timer");
@@ -201,16 +202,23 @@ public class GameManager : MonoBehaviour
                 {
                     instance.playSound("Button");
                     day += 1;
-                    if(stage.name == "Convenience")
-                    for (int i = 0; i < stage.transform.childCount; i++)
-                    {
-                        BoxRemains tempRemains = new BoxRemains(stage.transform.GetChild(i).GetComponent<BoxData>().boxItems);
-                        conBoxList.Add(tempRemains);
-
-                    }
-
-                    inventoryItems.Clear();
+                    slotLimit = playerInventory.slotLimit;
+  
+                    conBoxList.Clear();
+                  //  inventoryItems.Clear();
                     inventoryItems = playerInventory.inventoryItems;
+
+                    if (stage.name == "Convenience")
+                    {
+                        for (int i = 0; i < stage.transform.childCount; i++)
+                        {
+                            BoxRemains tempRemains = new BoxRemains(stage.transform.GetChild(i).GetComponent<BoxData>().boxItems);
+                            conBoxList.Add(tempRemains);
+
+                        }
+                    }
+        
+         
 
                     DataController.Instance.SaveGameData();
                     SceneManager.LoadScene("FieldMap", LoadSceneMode.Single);
@@ -225,7 +233,6 @@ public class GameManager : MonoBehaviour
                 });
             }
 
-            //StartTimer();
             ExitIcon();
             fade = uiManager.gameObject.GetComponent<Image>();
             fadeColor = fade.color;

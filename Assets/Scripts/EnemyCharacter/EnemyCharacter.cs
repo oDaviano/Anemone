@@ -12,7 +12,7 @@ public class EnemyCharacter : MonoBehaviour
      public bool inBattle = false;
     private int enemyType = (int)EnemyType.Light;
     [SerializeField] private float _Speed = 5.0f;
-    private float turnSpeed = 20;
+    //private float turnSpeed = 20;
     private NavMeshAgent agent;
    
     public int enemyHp = 10;

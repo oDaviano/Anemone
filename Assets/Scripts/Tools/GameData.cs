@@ -6,8 +6,9 @@ using System;
 [Serializable]
 public class GameData
 {
-    public int sound = 0;
+    public int sound = 1;
     public int day = 1;
+    public int slotLimit = 10;
     public List<ItemSlotInfo> inventoryItems = new List<ItemSlotInfo>();
     public List<BoxRemains> conBoxList = new List<BoxRemains>();
 
