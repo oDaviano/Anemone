@@ -7,11 +7,15 @@ public class ItemDrop : MonoBehaviour
 {
     private PlayerCharacter playerCharacter;
     private PlayerInventory inventory;
-    Button ok;
-    Button cancel;
+    [SerializeField] Button ok;
+    [SerializeField] Button cancel;
+
+    [SerializeField] Button dropInc;
+    [SerializeField] Button dropDec;
     public int itemIndex;
-    Slider slider;
-    Text dropCountText;
+    // Slider slider;
+   [SerializeField] Text dropCountText;
+    private int dropCount;
     public int itemCount;
     public Image dropIcon;
 
@@ -19,48 +23,55 @@ public class ItemDrop : MonoBehaviour
     {
         playerCharacter = GameObject.Find("PlayerCharacter").GetComponent<PlayerCharacter>();
         inventory = playerCharacter.playerInventory;
-        slider = transform.GetChild(2).GetComponent<Slider>();
-        dropCountText = transform.GetChild(0).GetComponent<Text>();
+
 
     }
 
     void Awake()
     {
-       
-        
-        ok = transform.GetChild(3).GetComponent<Button>();
-        cancel = transform.GetChild(4).GetComponent<Button>();
-        ok.onClick.AddListener(PanelOff);
         ok.onClick.AddListener(DropItem);
+        ok.onClick.AddListener(PanelOff);
+
         cancel.onClick.AddListener(PanelOff);
+
+        dropInc.onClick.AddListener(() =>
+        {
+            if(dropCount<inventory.inventoryItems[itemIndex].itemCount)
+            dropCount++;
+        });
+
+        dropDec.onClick.AddListener(() =>
+        {
+            if (dropCount >0)
+                dropCount--;
+        });
     }
 
     private void DropItem()
     {
         ItemSlotInfo temp = inventory.inventoryItems[itemIndex];
-        temp.itemCount -= (int)transform.GetChild(2).GetComponent<Slider>().value;
+        temp.itemCount -= dropCount;
         if (temp.itemCount <= 0)
             inventory.inventoryItems.Remove(inventory.inventoryItems[itemIndex]);
         else
-        inventory.inventoryItems[itemIndex] = temp;
+            inventory.inventoryItems[itemIndex] = temp;
     }
+ 
 
     private void PanelOff()
     {
         gameObject.SetActive(false);
+        dropCount = 0;
     }
 
     private void Update()
     {
-        transform.GetChild(1).GetComponent<Image>().sprite=dropIcon.sprite;
-        int value = (int)transform.GetChild(2).GetComponent<Slider>().value;
-         slider.minValue = 0;
-         slider.maxValue = itemCount;
-        dropCountText.text = value.ToString() +"/" +  itemCount.ToString();
+        transform.GetChild(1).GetComponent<Image>().sprite = dropIcon.sprite;
+        dropCountText.text = dropCount.ToString();
 
     }
 
- 
+
 
 
 }

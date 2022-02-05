@@ -12,6 +12,8 @@ public class TitleSceneManager : MonoBehaviour
     [SerializeField] Button optionButton;
     [SerializeField] GameObject optionWnd;
 
+    [SerializeField] Button newGame;
+    [SerializeField] Button loadGame;
 
     void Awake()
     {
@@ -23,9 +25,12 @@ public class TitleSceneManager : MonoBehaviour
         
         startButton.onClick.AddListener(() =>
         {
+            startButton.gameObject.SetActive(false);
 
+            newGame.gameObject.SetActive(true);
+            loadGame.gameObject.SetActive(true);
             GameManager.instance.playSound("Button");
-            SceneManager.LoadScene("FieldMap",LoadSceneMode.Single);
+
 
         });
 
@@ -36,6 +41,21 @@ public class TitleSceneManager : MonoBehaviour
 
         });
 
+       newGame.onClick.AddListener(() =>
+        {
+            DataController.Instance.ResetData();
+            GameManager.instance.setDatas();
+            GameManager.instance.playSound("Button");
+            SceneManager.LoadScene("Intro", LoadSceneMode.Single);
+        });
+
+
+        loadGame.onClick.AddListener(() =>
+        {
+
+            GameManager.instance.playSound("Button");
+            SceneManager.LoadScene("FieldMap", LoadSceneMode.Single);
+        });
 
 
 

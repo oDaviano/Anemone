@@ -11,8 +11,8 @@ public class CameraController : MonoBehaviour
 
     float minX = -5.1f;
     float minY =-4.1f;
-    float maxX = 8.1f;
-    float maxY = 8.0f;
+    float maxX = 5.1f;
+    float maxY = 4.1f;
 
     void Start()
     {
@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour
     {
         if ((transform.position.z > -30 && transform.position.z<-10 ))
         {
+
             if (Input.GetMouseButtonDown(0))
             {
                 MouseStart = new Vector3(-Input.mousePosition.x, -Input.mousePosition.y, dist);
@@ -38,11 +39,14 @@ public class CameraController : MonoBehaviour
                 transform.position = transform.position - (MouseMove - MouseStart);
             }
         }
+        if (transform.position.z == -20)
+        {
 
-        if (transform.position.x < minX) transform.position = new Vector3(minX, transform.position.y, transform.position.z);
-        else if(transform.position.x>maxX) transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
-        if (transform.position.y < minY)   transform.position = new Vector3(transform.position.x, minY, transform.position.z);
-         else if(transform.position.y>maxY) transform.position = new Vector3(transform.position.x,maxY, transform.position.z);
+            if (transform.position.x < minX) transform.position = new Vector3(minX, transform.position.y, transform.position.z);
+            else if (transform.position.x > maxX) transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
+            if (transform.position.y < minY) transform.position = new Vector3(transform.position.x, minY, transform.position.z);
+            else if (transform.position.y > maxY) transform.position = new Vector3(transform.position.x, maxY, transform.position.z);
+        }
 
 
     }

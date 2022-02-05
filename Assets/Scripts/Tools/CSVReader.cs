@@ -17,7 +17,10 @@ public static class CSVReader
         int m4;
 
         var list = new List<Dictionary<int, CombineInfo>>();
-        StreamReader sr = new StreamReader(Application.dataPath + "/Resources/GameDatas/" + file);//데이터 시트 열기
+
+        TextAsset sourcefile = Resources.Load<TextAsset>("GameDatas/" + file);
+        StringReader sr = new StringReader(sourcefile.text);//데이터 시트 열기
+         // StringReader sr = new StringReader(Application.dataPath + "/Resources/GameDatas/" + file);//데이터 시트 열기
 
         bool endOfFile = false;
         while (!endOfFile)
@@ -58,8 +61,10 @@ public static class CSVReader
         int hit;
         int price;
         var list = new List<Dictionary<int, WeaponInfo>>();
-        StreamReader sr2 = new StreamReader(Application.dataPath + "/Resources/GameDatas/" + file);
-
+        TextAsset sourcefile = Resources.Load<TextAsset>("GameDatas/"+file);
+        StringReader sr2 = new StringReader(sourcefile.text);//데이터 시트 열기
+  // StringReader sr = new StringReader(Application.dataPath + "/Resources/GameDatas/" + file);//데이터 시트 열기
+       // StringReader sr2 = new StringReader(Application.dataPath + "/Resources/GameDatas/" + file);
         bool endOfFile = false;
         while (!endOfFile)
         {
@@ -97,7 +102,9 @@ public static class CSVReader
         string itemCode;
         string price;
         var list = new List<Dictionary<int, ItemInfo>>();
-        StreamReader i2 = new StreamReader(Application.dataPath + "/Resources/GameDatas/" + file);
+        TextAsset sourcefile = Resources.Load<TextAsset>("GameDatas/" + file);
+        StringReader i2= new StringReader(sourcefile.text);//데이터 시트 열기
+//  StringReader i2 = new StringReader(Application.dataPath + "/Resources/GameDatas/" + file);
         bool endOfFile = false;
         while (!endOfFile)
         {
@@ -129,7 +136,11 @@ public static class CSVReader
         int stageDifficulty;
         int Danger;
         var list = new List<Dictionary<int, StageDatas>>();
-        StreamReader r3 = new StreamReader(Application.dataPath + "/Resources/GameDatas/" + file);
+
+        TextAsset sourcefile = Resources.Load<TextAsset>("GameDatas/"+file);
+        StringReader r3 = new StringReader(sourcefile.text);//데이터 시트 열기
+
+        // StringReader r3 = new StringReader(Application.dataPath + "/Resources/GameDatas/" + file);
 
         bool endOfFile = false;
         while (!endOfFile)
@@ -161,11 +172,11 @@ public static class CSVReader
     {
         int key;
         string boxName;
-
-   
- 
+       
         var list = new List<Dictionary<int, BoxDataInfo>>();
-        StreamReader bd = new StreamReader(Application.dataPath + "/Resources/GameDatas/" + file);
+        TextAsset sourcefile = Resources.Load<TextAsset>("GameDatas"+file);
+        StringReader bd = new StringReader(sourcefile.text);//데이터 시트 열기
+
 
         bool endOfFile = false;
         while (!endOfFile)
@@ -188,6 +199,46 @@ public static class CSVReader
 
 
             list.Add(tmp);
+        }
+
+        return list;
+    }
+    
+    public static List<Dictionary<int, DialogInfo>> DialogScript(string file)
+    {
+        int key;
+        string talker;
+        string script;
+        int expression;
+
+        var list = new List<Dictionary<int, DialogInfo>>();
+        TextAsset sourcefile = Resources.Load<TextAsset>("GameDatas" + file);
+        StringReader ds = new StringReader(sourcefile.text);//데이터 시트 열기
+
+        bool endOfFile = false;
+        while (!endOfFile)
+        {
+            string data_String2 = ds.ReadLine();
+            if (data_String2 == null)
+            {
+                endOfFile = true;
+                break;
+            }
+            var data_values = data_String2.Split(',');
+            var tmp = new Dictionary<int, DialogInfo>();
+
+            int.TryParse(data_values[0], out key);
+
+            talker = data_values[1];
+            script = data_values[2];
+            int.TryParse(data_values[3], out expression);
+
+            DialogInfo dialogInfo = new DialogInfo(talker, script, expression);
+
+            tmp.Add(key, dialogInfo);
+            list.Add(tmp);
+
+
         }
 
         return list;

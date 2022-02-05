@@ -12,10 +12,10 @@ public class ItemMenu : MonoBehaviour
     [SerializeField] private GameObject dropPanel;
     public ItemOption itemOption;
 
-    Button use;
-    Button dis;
-
-   public ItemSlotInfo selectedItem;
+  [SerializeField] Button use;
+  [SerializeField] Button dis;
+    [SerializeField] Button close;
+    public ItemSlotInfo selectedItem;
 
     int itemCount;
     int itemIndex;
@@ -28,11 +28,11 @@ public class ItemMenu : MonoBehaviour
     private void Start()
     {
         inventory = playerCharacter.playerInventory;
-        use = transform.GetChild(0).GetComponent<Button>();
-        dis = transform.GetChild(1).GetComponent<Button>();
+
         use.onClick.AddListener(Use);
         dis.onClick.AddListener(CallDropPanel);
-        itemSlotInfoData = CSVReader.WeaponRead("Weapon.csv");
+        close.onClick.AddListener(() => { gameObject.SetActive(false); });
+    itemSlotInfoData = CSVReader.WeaponRead("Weapon");
     }
 
 
@@ -71,9 +71,9 @@ public class ItemMenu : MonoBehaviour
        gameObject.SetActive(false);
         callDropPanel = !callDropPanel;
         callPanel = !callPanel;
-        transform.GetChild(0).gameObject.SetActive(callPanel);
+      //  transform.GetChild(0).gameObject.SetActive(callPanel);
         dropPanel.SetActive(true);
-        // dropPanel.transform.GetComponent<ItemDrop>().itemCount = transform.GetComponentInParent<InventoryWnd>().itemCount;
+      // dropPanel.drop
 
     }
 

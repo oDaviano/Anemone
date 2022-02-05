@@ -11,9 +11,5 @@ public class BoxInfoPanel : MonoBehaviour
 	{
 		_Box = GetComponent<BoxData>();
 	}
-	private void Update()
-	{
-	
-	
-	}
+
 }

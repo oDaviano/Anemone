@@ -23,14 +23,10 @@ public sealed class PlayerCharacter : MonoBehaviour
     public int speed;
     public float evasion;
 
-    private Vector3 oldPos;
-    private float oldPosX;
-    private float oldPosY;
-    Rigidbody2D rigidbody;
-
     RaycastHit2D hit;
 
-    float stayCount;
+   public float stayCount;
+   public  float searchTime=3.5f;
 
 
     public PlayerSearch playerSearch => _PlayerSearch;
@@ -39,7 +35,6 @@ public sealed class PlayerCharacter : MonoBehaviour
     void Start()
     {
         playerMovement = GameObject.Find("MoveButton").GetComponent<VirtualJoystick>();
-        rigidbody = GetComponent<Rigidbody2D>();
 
     }
 
@@ -64,17 +59,35 @@ public sealed class PlayerCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(playerMovement.direction.normalized);
-        //Debug.Log(transform.position);
-        hit = Physics2D.Raycast(transform.position,playerMovement.direction, 20.0f, 1 << 17);
-        Debug.DrawRay(transform.position, playerMovement.direction.normalized*30.0f , Color.red);
-        // Debug.Log(hit.collider);
+        Vector3 raycastPos = new Vector3(transform.position.x, transform.position.y + 20, transform.position.z);
+        hit = Physics2D.Raycast(raycastPos, playerMovement.direction, 20.0f, 1 << 17);
+ 
+        Debug.DrawRay(raycastPos, playerMovement.direction.normalized*20.0f , Color.red);
 
 
         if (hit)
 
         {
             playerMovement._Speed = 0;
+            /*
+            if (hit.collider.gameObject.CompareTag("Box"))
+            {
+
+                if (stayCount < 3.5f)
+                {
+                    stayCount += Time.deltaTime;
+                
+                }
+                else
+                _PlayerSearch.interactObject = hit.collider.gameObject;
+
+
+            }
+            else
+            {
+                stayCount = 0;
+            }
+            */
 
         }
         else
@@ -83,12 +96,7 @@ public sealed class PlayerCharacter : MonoBehaviour
         }
     }
 
-    public void OnTriggerStay2D(Collider2D collision)
-    {
-       
 
-
-    }
 
 
 

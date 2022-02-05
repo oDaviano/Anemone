@@ -18,13 +18,22 @@ public class CombineScrollbar : MonoBehaviour
         combinePanels = transform.GetChild(0).gameObject;
         scrollBar = GameObject.Find("CombineScrollbar").GetComponent<Scrollbar>();
         positionOrg = combinePanels.transform.localPosition;
-        List<Dictionary<int, CombineInfo>> combineInfoData = CSVReader.Read("CombineData.csv");
+        List<Dictionary<int, CombineInfo>> combineInfoData = CSVReader.Read("CombineData");
         count = combineInfoData.Count;
   
         for (int i = 0; i < count - 2; i++)
         {
             GameObject combineSlot = Resources.Load("Prefab/CombineSlot") as GameObject;
-            GameObject instance = PrefabUtility.InstantiatePrefab(combineSlot) as GameObject;
+            GameObject instance;
+#if UNITY_EDITOR
+          instance = PrefabUtility.InstantiatePrefab(combineSlot) as GameObject;
+#endif
+
+#if UNITY_ANDROID
+           instance = new GameObject();
+#endif
+
+
             instance.transform.SetParent(combinePanels.transform);
             
         }

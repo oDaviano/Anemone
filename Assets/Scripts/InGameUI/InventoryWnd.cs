@@ -15,6 +15,8 @@ public class InventoryWnd : MonoBehaviour
     private int slotLimit;
     public int itemCount;
 
+    Sprite emptySlot;
+    Sprite unableSlot;
 
     public PlayerInventory inventory { get; private set; }
 
@@ -22,6 +24,8 @@ public class InventoryWnd : MonoBehaviour
     {
         playerCharacter = GameObject.Find("PlayerCharacter").GetComponent<PlayerCharacter>();
         inventory = playerCharacter.playerInventory;
+        emptySlot = Resources.Load<Sprite>("Images/UI/Panel/ItemBox");
+        unableSlot = Resources.Load<Sprite>("Images/UI/Panel/ItemBoxClose");
     }
 
     private void Update()
@@ -40,11 +44,8 @@ public class InventoryWnd : MonoBehaviour
 
             if (i < inventory.inventoryItems.Count)
            {
-                string path = $"Images/Icons/Items/{inventory.inventoryItems[index].itemName}";
+                string path = $"Images/Items/{inventory.inventoryItems[index].itemName}";
                 slot[i].GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
-                Color tempColor = slot[i].GetComponent<Image>().color;
-                tempColor = Color.white;
-                slot[i].GetComponent<Image>().color = tempColor;
                 itemCount = inventory.inventoryItems[index].itemCount;
 
                 //아이템 수량이 보이는 조건 - 아이템 종류(코드)
@@ -58,26 +59,15 @@ public class InventoryWnd : MonoBehaviour
             else if (i<slotLimit)
             {
           
-                slot[i].GetComponent<Image>().sprite = null;
-                Color tempColor = slot[i].GetComponent<Image>().color;
-          
-                tempColor.r = 0;
-                tempColor.g = 0;
-                tempColor.b = 0;
-                tempColor.a = 255f;
-                slot[i].GetComponent<Image>().color = tempColor;
+                slot[i].GetComponent<Image>().sprite = emptySlot;
+  
                 transform.GetChild(i).GetChild(0).gameObject.SetActive(false);
             }
             //잠긴 슬롯
             else
             {
-                slot[i].GetComponent<Image>().sprite = null;
-                Color tempColor = slot[i].GetComponent<Image>().color;
-                tempColor.r =255;
-                tempColor.g =255;
-                tempColor.b =255; 
-                tempColor.a = 0f;
-                slot[i].GetComponent<Image>().color = tempColor;
+                slot[i].GetComponent<Image>().sprite = unableSlot;
+
                 transform.GetChild(i).GetChild(0).gameObject.SetActive(false);
  
             }

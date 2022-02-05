@@ -5,82 +5,65 @@ using UnityEngine.UI;
 
 public class TitleOption : MonoBehaviour
 {
+    Button effectOn;
+    Button effectOff;
+    Button backGroundOn;
+    Button backGroundOff;
     Button close;
-    Button korean;
-    Button english;
-    Button soundOn;
-    Button soundOff;
-    Button joyStick;
-    Button button;
+
 
     private void Start()
     {
-        korean = transform.GetChild(0).GetChild(0).GetComponent<Button>();
-        english = transform.GetChild(0).GetChild(1).GetComponent<Button>();
-        soundOn = transform.GetChild(1).GetChild(0).GetComponent<Button>();
-        soundOff = transform.GetChild(1).GetChild(1).GetComponent<Button>();
-        joyStick = transform.GetChild(2).GetChild(0).GetComponent<Button>();
-        button = transform.GetChild(2).GetChild(1).GetComponent<Button>();
-        close = transform.GetChild(3).GetComponent<Button>();
 
-        korean.onClick.AddListener(() =>
+        effectOn = transform.GetChild(0).GetChild(0).GetComponent<Button>();
+        effectOff = transform.GetChild(0).GetChild(1).GetComponent<Button>();
+        backGroundOn = transform.GetChild(1).GetChild(0).GetComponent<Button>();
+        backGroundOff = transform.GetChild(1).GetChild(1).GetComponent<Button>();
+
+        close = transform.GetChild(2).GetComponent<Button>();
+
+        effectOn.onClick.AddListener(() =>
         {
             GameManager.instance.playSound("Button");
-            korean.gameObject.GetComponent<Image>().color = Color.white;
-            korean.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
-            english.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
-            english.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+            effectOn.gameObject.GetComponent<Image>().color = Color.white;
+            effectOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+            effectOff.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+            effectOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+            GameManager.instance.soundPlay = 1;
         });
 
-        english.onClick.AddListener(() =>
+        effectOff.onClick.AddListener(() =>
         {
             GameManager.instance.playSound("Button");
-            english.gameObject.GetComponent<Image>().color = Color.white;
-            english.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
-            korean.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
-            korean.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+            effectOff.gameObject.GetComponent<Image>().color = Color.white;
+            effectOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+            effectOn.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+            effectOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+            GameManager.instance.soundPlay = 0;
         });
 
-        soundOn.onClick.AddListener(() =>
+        backGroundOn.onClick.AddListener(() =>
         {
-
-            soundOn.gameObject.GetComponent<Image>().color = Color.white;
-            soundOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
-            soundOff.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
-            soundOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
-            GameManager.instance.soundPlay= 1;
             GameManager.instance.playSound("Button");
+            backGroundOn.gameObject.GetComponent<Image>().color = Color.white;
+            backGroundOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+            backGroundOff.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+            backGroundOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+            GameManager.instance.backGroundPlay = 1;
+
+
         });
 
-        soundOff.onClick.AddListener(() =>
+        backGroundOff.onClick.AddListener(() =>
          {
-
-             soundOff.gameObject.GetComponent<Image>().color = Color.white;
-             soundOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
-             soundOn.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
-             soundOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
-             GameManager.instance.soundPlay = 0;
              GameManager.instance.playSound("Button");
+             backGroundOff.gameObject.GetComponent<Image>().color = Color.white;
+             backGroundOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+             backGroundOn.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+             backGroundOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+             GameManager.instance.backGroundPlay = 0;
+
          });
-
-
-        joyStick.onClick.AddListener(() =>
-        {
-            GameManager.instance.playSound("Button");
-            joyStick.gameObject.GetComponent<Image>().color = Color.white;
-            joyStick.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
-            button.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
-            button.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
-        });
-
-        button.onClick.AddListener(() =>
-        {
-            GameManager.instance.playSound("Button");
-            button.gameObject.GetComponent<Image>().color = Color.white;
-            button.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
-            joyStick.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
-            joyStick.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
-        });
 
 
 
@@ -90,6 +73,44 @@ public class TitleOption : MonoBehaviour
             gameObject.SetActive(false);
 
         });
+
+
+
+        if (GameManager.instance.soundPlay == 1)
+        {
+
+            effectOn.gameObject.GetComponent<Image>().color = Color.white;
+            effectOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+            effectOff.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+            effectOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        }
+        else
+        {
+            effectOff.gameObject.GetComponent<Image>().color = Color.white;
+            effectOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+            effectOn.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+            effectOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        }
+
+
+        if (GameManager.instance.backGroundPlay == 1)
+        {
+
+          backGroundOn.gameObject.GetComponent<Image>().color = Color.white;
+          backGroundOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+          backGroundOff.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+          backGroundOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        }
+        else
+        {
+           backGroundOff.gameObject.GetComponent<Image>().color = Color.white;
+           backGroundOff.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.black;
+           backGroundOn.gameObject.GetComponent<Image>().color = new Color32(20, 37, 34, 255);
+           backGroundOn.gameObject.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        }
+
+
+
     }
 
 

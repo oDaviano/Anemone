@@ -35,8 +35,8 @@ public class CombineSlot : MonoBehaviour
         playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
         combineButton = transform.GetChild(0).GetComponent<Button>();
 
-        List<Dictionary<int, CombineInfo>> combineInfoData = CSVReader.Read("CombineData.csv");
-        weaponData = CSVReader.WeaponRead("Weapon.csv");
+        List<Dictionary<int, CombineInfo>> combineInfoData = CSVReader.Read("CombineData");
+        weaponData = CSVReader.WeaponRead("Weapon");
 
         keyIndex = transform.GetSiblingIndex();
 

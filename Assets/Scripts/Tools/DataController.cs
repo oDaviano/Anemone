@@ -6,7 +6,6 @@ using System;
 
 public class DataController : MonoBehaviour
 {
-    //GameManager gameManager;
     static GameObject container;
     static GameObject _Container
     {
@@ -16,11 +15,13 @@ public class DataController : MonoBehaviour
         }
     }
     static DataController instance;
+   
+    //싱글톤 인스턴스
     public static DataController Instance
     {
         get
         {
-            if(!instance)
+            if (!instance)
             {
                 container = new GameObject();
                 container.name = "DataController";
@@ -31,50 +32,85 @@ public class DataController : MonoBehaviour
             return instance;
         }
     }
-    public string GameDataFileName = "DataFile.json";
+
+
+    public string GameDataFileName = "DataFile";
+    public string OptionDataFileName = "Option";
+
     public GameData gameData;
+    public OptionData optionData;
 
-    /*
-    public GameData gameData
+    //데이터 파일 불러오기
+    public void LoadGameData(string fileName)
     {
-        get
-        {
 
-
-            return _gameData;
-        }
-    }
-    */
-    public void LoadGameData()
-    {
-        string filePath = Application.persistentDataPath + GameDataFileName;
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        filePath = filePath + ".json";
         if (File.Exists(filePath))
         {
+
             string fromJsonData = File.ReadAllText(filePath);
-            gameData = JsonUtility.FromJson<GameData>(fromJsonData);
+
+            if (fileName == GameDataFileName)
+            {
+                gameData = JsonUtility.FromJson<GameData>(fromJsonData);
+            }
+            else if (fileName == OptionDataFileName)
+            {
+                optionData = JsonUtility.FromJson<OptionData>(fromJsonData);
+            }
         }
         else
         {
-            gameData = new GameData();
+
+            TextAsset textAsset = Resources.Load("GameDatas/Json/" + fileName) as TextAsset;
+            gameData = JsonUtility.FromJson<GameData>(textAsset.ToString());
+            optionData = new OptionData();
+
         }
+
     }
-    public void SaveGameData()
+    //데이터 리셋: 에셋 폴더에 있는 json파일로 교체
+    public void ResetData()
     {
-        gameData.sound = GameManager.instance.soundPlay;
-        gameData.day = GameManager.instance.day;
-        gameData.slotLimit = GameManager.instance.slotLimit;
-        gameData.inventoryItems = GameManager.instance.inventoryItems;
-        gameData.conBoxList = GameManager.instance.conBoxList;
+        TextAsset textAsset = Resources.Load("GameDatas/Json/" + GameDataFileName) as TextAsset;
+        gameData = JsonUtility.FromJson<GameData>(textAsset.ToString());
 
-        string toJsonData = JsonUtility.ToJson(gameData);
-        string filePath = Application.persistentDataPath + GameDataFileName;
+    }
+
+    //데이터 파일 정보 갱신
+    public void SaveGameData(string fileName)
+    {
+        string toJsonData;
+        if (fileName == "Option")
+        {
+            optionData.sound = GameManager.instance.soundPlay;
+            optionData.backGround = GameManager.instance.backGroundPlay;
+            toJsonData = JsonUtility.ToJson(optionData);
+        }
+        else if (fileName == "DataFile")
+        {
+            gameData.day = GameManager.instance.day;
+            gameData.slotLimit = GameManager.instance.slotLimit;
+            gameData.inventoryItems = GameManager.instance.inventoryItems;
+            gameData.conBoxList = GameManager.instance.conBoxList;
+           toJsonData = JsonUtility.ToJson(gameData);
+        }
+        else
+        {
+            toJsonData= JsonUtility.ToJson(gameData);
+        }
+
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+
+        filePath = filePath + ".json";
         File.WriteAllText(filePath, toJsonData);
-
     }
 
 
     private void OnApplicationQuit()
     {
-        SaveGameData();
+        SaveGameData("Option");
+        SaveGameData("DataFile");
     }
 }

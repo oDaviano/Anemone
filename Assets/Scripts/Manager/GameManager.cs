@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance;
     private GameObject timer;
     private GameObject exitUI;
@@ -13,7 +14,6 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private Image fade;
     private Color fadeColor;
-    [SerializeField] private PlayerPrefs optionUI;
 
     private int score;
     int maxTimeLimit = 300;
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     public int day;
     public int soundPlay;
+    public int backGroundPlay;
     public int slotLimit;
     PlayerInventory playerInventory;
    GameObject stage;
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public AudioClip buttonSound;
     AudioSource audioSource;
-    
+    AudioSource backGroundAudioSource;
 
     void Awake()
     {
@@ -45,25 +46,18 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
-        audioSource = GetComponent<AudioSource>();
-        DataController.Instance.LoadGameData();
 
-        inventoryItems = new List<ItemSlotInfo>();
-        inventoryItems = DataController.Instance.gameData.inventoryItems;
-  
-
-        conBoxList = new List<BoxRemains>();
-        conBoxList = DataController.Instance.gameData.conBoxList;
-
-        day = DataController.Instance.gameData.day;
-        slotLimit = DataController.Instance.gameData.slotLimit;
-        soundPlay = DataController.Instance.gameData.sound;
-        stage = GameObject.FindGameObjectWithTag("Stage");
+        backGroundAudioSource = GetComponent<AudioSource>();
+        DataController.Instance.LoadGameData("Option");
+        DataController.Instance.LoadGameData("DataFile");
+        setDatas();
     }
 
     void Update()
     {
-     audioSource.volume = soundPlay;
+        audioSource = Camera.main.transform.GetComponent<AudioSource>();
+        audioSource.volume = soundPlay;
+        backGroundAudioSource.volume = backGroundPlay;
 
 
         if (timeLimit > 0 && fade!=null)
@@ -71,12 +65,28 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1.0f;
             fadeColor.a -= Time.deltaTime * 0.5f;
             fade.color = fadeColor;
-
         }
 
-        //Scene scene = SceneManager.GetActiveScene();
-        if(stage!=null)
-        StartTimer();
+        if (stage != null)
+        {
+            StartTimer();
+        }
+    }
+
+    public void setDatas()
+    {
+        inventoryItems = new List<ItemSlotInfo>();
+        inventoryItems = DataController.Instance.gameData.inventoryItems;
+
+
+        conBoxList = new List<BoxRemains>();
+        conBoxList = DataController.Instance.gameData.conBoxList;
+
+        day = DataController.Instance.gameData.day;
+        slotLimit = DataController.Instance.gameData.slotLimit;
+        soundPlay = DataController.Instance.optionData.sound;
+        backGroundPlay = DataController.Instance.optionData.backGround;
+        stage = GameObject.FindGameObjectWithTag("Stage");
     }
 
    public void playSound(string action)
@@ -90,10 +100,9 @@ public class GameManager : MonoBehaviour
 
 
     }
+
     private void ExitIcon()
     {
-        //uiManager.ShowExitPanel();
-
         GameObject.Find("ExitIcon").GetComponent<Button>().onClick.AddListener(() =>
         {
             instance.playSound("Button");
@@ -120,7 +129,7 @@ public class GameManager : MonoBehaviour
                 conBoxList.Add(tempRemains);
         
             }
-            DataController.Instance.SaveGameData();
+            DataController.Instance.SaveGameData("DataFile");
             GameObject.Find("ExitIcon").GetComponent<Button>().interactable = false;
             invenIcon.GetComponent<Button>().interactable = false;
 
@@ -146,7 +155,7 @@ public class GameManager : MonoBehaviour
         {
             if (timeLimit <= 60)
             {
-                timer.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Art/UI/Button/Timer_Button_timeover");
+                timer.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/Button/Timer_Button_timeover");
                 timer.GetComponentInChildren<Text>().color = new Color32(255, 0, 50, 255);
             }
 
@@ -157,12 +166,11 @@ public class GameManager : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //씬이 타이틀이나 필드가 아닐 때 = 에이리어
-      if ((scene.name != "FieldMap") && (scene.name != "Title"))
+        stage = GameObject.FindGameObjectWithTag("Stage");
+        if (stage!=null)
         {
-            
             playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
-            stage = GameObject.FindGameObjectWithTag("Stage");
+ 
             timeLimit = maxTimeLimit;
             playerInventory.slotLimit = slotLimit;
             playerInventory.inventoryItems = DataController.Instance.gameData.inventoryItems;
@@ -201,11 +209,10 @@ public class GameManager : MonoBehaviour
                 exitUI.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() =>
                 {
                     instance.playSound("Button");
-                    day += 1;
+                  
                     slotLimit = playerInventory.slotLimit;
-  
+
                     conBoxList.Clear();
-                  //  inventoryItems.Clear();
                     inventoryItems = playerInventory.inventoryItems;
 
                     if (stage.name == "Convenience")
@@ -217,12 +224,16 @@ public class GameManager : MonoBehaviour
 
                         }
                     }
-        
-         
 
-                    DataController.Instance.SaveGameData();
-                    SceneManager.LoadScene("FieldMap", LoadSceneMode.Single);
-          
+                    DataController.Instance.SaveGameData("DataFile");
+                    if (day <= 1)
+                        SceneManager.LoadScene("Dialog", LoadSceneMode.Single);
+                    else
+                    {
+                        SceneManager.LoadScene("FieldMap", LoadSceneMode.Single);
+                        day++;
+                    }
+
 
                 });
 
@@ -236,10 +247,10 @@ public class GameManager : MonoBehaviour
             ExitIcon();
             fade = uiManager.gameObject.GetComponent<Image>();
             fadeColor = fade.color;
-   
-        }
 
+        }
     }
+
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;

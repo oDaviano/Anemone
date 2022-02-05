@@ -11,87 +11,79 @@ public class PlayerSearch : MonoBehaviour
     [SerializeField] GameObject boxInfoPanel;
     private float Distance = 40.0f;
     private int CanSearch = 0;
-    public Text boxName;
+    [SerializeField] Image searchBar;
     public GameObject[] slot;
-   // private Animator animator;
+    PlayerCharacter playerCharacter;
 
     private void Start()
     {
+        playerCharacter = transform.GetComponent<PlayerCharacter>();
         for (int i = 0; i < 8; i++)
         {
             slot[i] = (boxInfoPanel.transform.GetChild(i).gameObject);
         }
-      //  animator = GetComponentInParent<Animator>();
     }
 
     private void Update()
     {
-        if (interactObject != null)
-        {
-            ObjectSearch();
-        }
+        _UIManager.ShowBoxPanel(CanSearch);
 
+        ObjectSearch();
         InitializeBoxWnd();
     }
 
     public void ObjectSearch()
     {
-       // Debug.Log(Vector3.Distance(interactObject.transform.position, transform.position) <= Distance);
-        if ((Vector3.Distance(interactObject.transform.position, transform.position) <= Distance))
+
+        if (interactObject != null)
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (playerCharacter.stayCount < 3.5f)
             {
-           
-                switch (CanSearch)
-                {
-                    case 0:
-                   
-                        BData = interactObject.GetComponent<BoxData>();
-                        _UIManager.SetBoxName(interactObject.name);
-                        CanSearch = 1;
-                      //  animator.SetBool("Searching", true);
-                        break;
-                    case 1:
-                        CanSearch = 0;
-                      //  animator.SetBool("Searching", false);
-                        break;
-                }
-                _UIManager.ShowBoxPanel(CanSearch);
+                playerCharacter.stayCount += Time.deltaTime;
+      
+
+            }
+            else
+            {
+                CanSearch = 1;
+
+                playerCharacter.stayCount = 3.5f;
             }
         }
-        else if (CanSearch == 1)
-        {
-            interactObject = null;
-            BData = null;
-            CanSearch = 0;
-            _UIManager.ShowBoxPanel(CanSearch);
-           // animator.SetBool("Searching", false);
 
-        }
-        else
-        {
-            interactObject = null;
-            BData = null;
-        }
+        searchBar.transform.GetChild(0).GetComponent<Image>().fillAmount = playerCharacter.stayCount / 3.3f;
 
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == 17)
+        if ((interactObject == null) && (other.gameObject.CompareTag("Box")))
+        {
             interactObject = other.gameObject;
+            BData = interactObject.transform.GetComponent<BoxData>();
+            searchBar.gameObject.SetActive(true);
+
+        }
     }
-    /*
-    private bool CanSearchObject(GameObject gameObject)
+
+    private void OnTriggerExit2D(Collider2D other)
     {
-        return ((1 << gameObject.layer) & _InteractableLayer) != 0;
+        interactObject = null;
+        playerCharacter.stayCount = 0;
+        BData = null;
+        CanSearch = 0;
+        searchBar.gameObject.SetActive(false);
+        searchBar.transform.GetChild(0).GetComponent<Image>().fillAmount = 0;
+
     }
-    */
+
 
     public void InitializeBoxWnd()
     {
+
         if (BData != null)
         {
+            _UIManager.SetBoxName(BData.boxName);
             for (int i = 0; i < 8; i++)
             {
                 bool hasItem = i < BData.boxItems.Count;
@@ -101,14 +93,15 @@ public class PlayerSearch : MonoBehaviour
 
                 if (hasItem)
                 {
-                    path = $"Images/Icons/Items/{BData.boxItems[i].itemName}";
+                    path = $"Images/Items/{BData.boxItems[i].itemName}";
                     slotImage.sprite = Resources.Load<Sprite>(path);
-                    tempColor = Color.white;
+        
                 }
                 else
                 {
-                    slotImage.sprite = null;
-                    tempColor = Color.black;
+
+                    slotImage.sprite = Resources.Load<Sprite>("Images/UI/Panel/ItemBox");
+                 
                 }
 
                 slotImage.color = tempColor;

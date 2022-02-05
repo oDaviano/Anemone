@@ -9,9 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
     guid: e777ade9833dccd45848b507a9269f24
   - enabled: 1
+    path: Assets/Scenes/Intro.unity
+    guid: 1501a78e8fd40d44f917f558710739b8
+  - enabled: 1
     path: Assets/Scenes/FieldMap.unity
     guid: 862981855c9f43a4981fc94df7b1e56b
   - enabled: 1
     path: Assets/Scenes/Convenience.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Dialog.unity
+    guid: c7f637517185cb2429894af9178e7c28
   m_configObjects: {}

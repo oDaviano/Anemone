@@ -10,6 +10,10 @@ public class ChangePanel : MonoBehaviour
     private Button extendButton;
     private PlayerInventory playerInventory;
     [SerializeField] private GameObject extendUI;
+
+    [SerializeField]GameObject invenUI;
+    [SerializeField] GameObject combineUI;
+
     int extendCount;
 
     void Start()
@@ -48,8 +52,8 @@ public class ChangePanel : MonoBehaviour
             combineButton.gameObject.transform.GetChild(0).GetComponent<Image>().color = Color.black;
             combineButton.gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;
 
-            transform.parent.GetChild(1).gameObject.SetActive(true);
-            transform.parent.GetChild(3).gameObject.SetActive(false);
+           invenUI.SetActive(true);
+           combineUI.SetActive(false);
         });
 
         combineButton.onClick.AddListener(() =>
@@ -61,8 +65,8 @@ public class ChangePanel : MonoBehaviour
             invenButton.gameObject.transform.GetChild(0).GetComponent<Image>().color = Color.black;
             invenButton.gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;
 
-            transform.parent.GetChild(1).gameObject.SetActive(false);
-            transform.parent.GetChild(3).gameObject.SetActive(true);
+            invenUI.SetActive(false);
+            combineUI.SetActive(true);
 
         });
 

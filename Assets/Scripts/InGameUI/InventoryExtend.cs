@@ -67,13 +67,10 @@ public class InventoryExtend : MonoBehaviour
         slot3 = gameObject.transform.GetChild(2).gameObject;
         slot4 = gameObject.transform.GetChild(3).gameObject;
 
-        slot1.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Icons/Items/OAE");
-        slot2.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Icons/Items/Wood");
-        slot3.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Icons/Items/Leather");
-        slot4.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Icons/Items/Rubber");
-
-
-
+        slot1.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Items/OAE");
+        slot2.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Items/Wood");
+        slot3.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Items/Leather");
+        slot4.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Items/Rubber");
 
         slot3.gameObject.SetActive(false);
         slot4.gameObject.SetActive(false);

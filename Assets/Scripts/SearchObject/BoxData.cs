@@ -9,20 +9,19 @@ public class BoxData : MonoBehaviour
    [SerializeField] private int boxCode = 0;
    public List<ItemSlotInfo> boxItems  = new List<ItemSlotInfo>();
     string code="00000";
-
+    [SerializeField]public string boxName;
     
 
     void Start()
     {
-      // SetBox();
       
     }
 
     void SetBox()
     {
 
-        List<Dictionary<int, BoxDataInfo>> boxDataInfo = CSVReader.BoxItems("BoxData.csv");
-        List<Dictionary<int, ItemInfo>> itemInfo = CSVReader.ItemRead("ItemInfo.csv");
+        List<Dictionary<int, BoxDataInfo>> boxDataInfo = CSVReader.BoxItems("BoxData");
+        List<Dictionary<int, ItemInfo>> itemInfo = CSVReader.ItemRead("ItemInfo");
         
                for (int i = 0; i < 8; i++)
                {

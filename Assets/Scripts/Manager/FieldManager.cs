@@ -4,16 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using TMPro;
 public class FieldManager : MonoBehaviour
 {
-   // int count = 0;
-
-    [SerializeField] Button[] areaButtons;//지역 진입 버튼
     [SerializeField] GameObject[] areas;
     [SerializeField] Button startButton;
     [SerializeField] GameObject stageInfo;
-    Text stageName;
-    Text stageDiff;
+   [SerializeField] Text stageName;
+
+    [SerializeField] TextMeshProUGUI dayCount;
     string sceneName;
     private List<StageDatas> stages;
 
@@ -22,33 +21,47 @@ public class FieldManager : MonoBehaviour
     [SerializeField] Button zoomIn;
     [SerializeField] Button zoomOut;
 
+
     [SerializeField] GameObject map;
     [SerializeField] Button back;
     Vector3 cameraDefaultPos;
+    Camera camera;
 
-    private string dangerLevel;
-    private string itemLevel;
-    private int dangerCount;
-    private string star;
+    float cameraX;
+    float cameraY;
+
+    [SerializeField] GameObject diffStars;
+    [SerializeField] GameObject itemStars;
+
+  Sprite emptyStar;
+  Sprite fullStar;
+
+    int itemLevel;
+    int dangerCount;
 
     private void Awake()
     {
-        cameraDefaultPos = Camera.main.transform.position;
+        camera = Camera.main;
+        cameraDefaultPos = camera.transform.position;
 
+        emptyStar = Resources.Load<Sprite>("Images/UI/Buttons/Star_Empty");
+        fullStar = Resources.Load<Sprite>("Images/UI/Buttons/Star_Full");
 
         areas = new GameObject[5];
+
         for (int i = 0; i < areas.Length; i++)
         {
             areas[i] = map.transform.GetChild(i).gameObject;
+
         }
 
         back.onClick.AddListener(() =>
         {
             GameManager.instance.playSound("Button");
-            Camera.main.transform.position = cameraDefaultPos;
+            camera.transform.position = cameraDefaultPos;
             for (int i = 0; i < 5; i++)
             {
-                areaButtons[i].gameObject.SetActive(true);
+                //  areaButtons[i].gameObject.SetActive(true);
                 zoomIn.gameObject.SetActive(true);
                 zoomOut.gameObject.SetActive(true);
 
@@ -63,27 +76,31 @@ public class FieldManager : MonoBehaviour
         {
 
             GameManager.instance.playSound("Button");
-            Camera.main.transform.position = cameraDefaultPos + new Vector3(0, 0, 15);
+            camera.transform.position = cameraDefaultPos + new Vector3(0, 0, 15);
 
         });
 
         zoomOut.onClick.AddListener(() =>
         {
             GameManager.instance.playSound("Button");
-            Camera.main.transform.position = cameraDefaultPos;
+            camera.transform.position = cameraDefaultPos;
+
 
         });
-        // ButtonInitialize();
-    }
-    private void Update()
-    {
+
         startButton.onClick.AddListener(() =>
         {
             GameManager.instance.playSound("Button");
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);//선택한 지역에 해당하는 씬을 호출
         });
 
+    }
+    private void Update()
+    {
+        dayCount.text = GameManager.instance.day.ToString();
         CastRay();
+
+
         if (target != null)
         {
             stageInfo.SetActive(true);
@@ -94,92 +111,54 @@ public class FieldManager : MonoBehaviour
 
     void CastRay()
     {
-
-        Vector2 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-        Ray2D ray = new Ray2D(pos, Vector2.zero);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
         if (Input.GetMouseButtonDown(0))
+        {
+
+            Vector2 pos = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -camera.transform.position.z));
+            Ray2D ray = new Ray2D(pos, Vector2.zero);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
             if (hit.collider != null)
             {
                 GameManager.instance.playSound("Button");
                 target = hit.collider.gameObject;
 
-                Camera.main.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, -10);
+                cameraX = target.transform.position.x;
+                cameraY = target.transform.position.y;
+                camera.transform.position = new Vector3(cameraX, cameraY, -10);
                 zoomIn.gameObject.SetActive(false);
                 zoomOut.gameObject.SetActive(false);
             }
-
+        }
     }
 
     void SetStageInfo()
     {
-        List<Dictionary<int, StageDatas>> stageDatas = CSVReader.Stage("Stage.csv");//Stage.csv 파일에서 스테이지 데이터 호출
+        List<Dictionary<int, StageDatas>> stageDatas = CSVReader.Stage("Stage");//Stage.csv 파일에서 스테이지 데이터 호출
         int index = target.transform.GetSiblingIndex();
- 
-        star = "";
 
-        stageName = GameObject.Find("StageName").GetComponent<Text>();
-        stageDiff = GameObject.Find("StageDiff").GetComponent<Text>();
-        sceneName = areaButtons[index].name;
-        stageName.text = " " + areaButtons[index].name;//스테이지 정보 창에 선택한 버튼의 인덱스에 따라 csv 파일을 
+        sceneName = areas[index].name;
+        stageName.text = areas[index].name;//스테이지 정보 창에 선택한 버튼의 인덱스에 따라 csv 파일을 
 
         int.TryParse(stageDatas[index + 1][index].Danger, out dangerCount);
+        int.TryParse(stageDatas[index + 1][index].stageDifficulty, out itemLevel);
+
 
         for (int j = 0; j < 5; j++)
         {
+
             if (j < dangerCount)
-                star += "★";
+                diffStars.transform.GetChild(j).GetComponent<Image>().sprite = fullStar;
             else
-                star += "☆";
+                diffStars.transform.GetChild(j).GetComponent<Image>().sprite = emptyStar;
+
+            if (j < itemLevel)
+                itemStars.transform.GetChild(j).GetComponent<Image>().sprite = fullStar;
+            else
+                itemStars.transform.GetChild(j).GetComponent<Image>().sprite = emptyStar;
         }
-        stageDiff.text = $"  아이템: {stageDatas[index + 1][index].stageDifficulty}\n 위험도: {star}";//참조한 정보 출력
 
         // c# 클로져 기능
     }
-
-
-    public void ButtonInitialize()
-    {
-        List<Dictionary<int, StageDatas>> stageDatas = CSVReader.Stage("Stage.csv");//Stage.csv 파일에서 스테이지 데이터 호출
-
-
-        for (int i = 0; i < areaButtons.Length; i++)
-        {
-            int index = i;
-
-            areaButtons[index].onClick.AddListener(() =>
-            {
-                stageInfo.SetActive(true);
-                Camera.main.transform.position = new Vector3(areas[index].transform.position.x, areas[index].transform.position.y, -10);
-                star = "";
-
-                stageName = GameObject.Find("StageName").GetComponent<Text>();
-
-                stageDiff = GameObject.Find("StageDiff").GetComponent<Text>();
-                sceneName = areaButtons[index].name;
-                stageName.text = " " + areaButtons[index].name;//스테이지 정보 창에 선택한 버튼의 인덱스에 따라 csv 파일을 
-
-                int.TryParse(stageDatas[index + 1][index].Danger, out dangerCount);
-
-                for (int j = 0; j < 5; j++)
-                {
-                    areaButtons[j].gameObject.SetActive(false);
-                    if (j < dangerCount)
-                        star += "★";
-                    else
-
-                        star += "☆";
-
-                }
-                stageDiff.text = $" 아이템: {stageDatas[index + 1][index].stageDifficulty}\n 위험도: {star}";//참조한 정보 출력
-
-
-
-            });
-            // c# 클로져 기능
-
-        }
-    }
-
 
 }
