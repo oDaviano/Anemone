@@ -57,12 +57,12 @@ public class CombineSlot : MonoBehaviour
     private void SetCombineData()
     {
         transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.resultName}");
-        transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m1Name}");
-        transform.GetChild(2).GetChild(1).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m2Name}");
-        transform.GetChild(2).GetChild(2).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m3Name}");
+        transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.m1Name}");
+        transform.GetChild(2).GetChild(1).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.m2Name}");
+        transform.GetChild(2).GetChild(2).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.m3Name}");
         if (combineInfo.m4Name != "null")
         {
-            transform.GetChild(2).GetChild(3).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.m4Name}");
+            transform.GetChild(2).GetChild(3).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.m4Name}");
         }
         else
         {

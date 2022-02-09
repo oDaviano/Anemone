@@ -138,7 +138,8 @@ public class FieldManager : MonoBehaviour
         int index = target.transform.GetSiblingIndex();
 
         sceneName = areas[index].name;
-        stageName.text = areas[index].name;//스테이지 정보 창에 선택한 버튼의 인덱스에 따라 csv 파일을 
+        stageName.text = stageDatas[index + 1][index].stageName;//스테이지 정보 창에 선택한 버튼의 자식 인덱스와 파일의 key를 비교
+        
 
         int.TryParse(stageDatas[index + 1][index].Danger, out dangerCount);
         int.TryParse(stageDatas[index + 1][index].stageDifficulty, out itemLevel);

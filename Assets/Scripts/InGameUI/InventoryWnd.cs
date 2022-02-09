@@ -47,7 +47,6 @@ public class InventoryWnd : MonoBehaviour
                 string path = $"Images/Items/{inventory.inventoryItems[index].itemName}";
                 slot[i].GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
                 itemCount = inventory.inventoryItems[index].itemCount;
-
                 //아이템 수량이 보이는 조건 - 아이템 종류(코드)
                 if(int.Parse(inventory.inventoryItems[index].itemCode)/1000 ==10)
                     transform.GetChild(i).GetChild(0).gameObject.SetActive(false);

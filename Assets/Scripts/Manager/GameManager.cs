@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         DataController.Instance.LoadGameData("Option");
         DataController.Instance.LoadGameData("DataFile");
         setDatas();
+        
     }
 
     void Update()
@@ -155,7 +156,7 @@ public class GameManager : MonoBehaviour
         {
             if (timeLimit <= 60)
             {
-                timer.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/Button/Timer_Button_timeover");
+                timer.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/Buttons/Timer_Button_timeover");
                 timer.GetComponentInChildren<Text>().color = new Color32(255, 0, 50, 255);
             }
 
@@ -210,7 +211,7 @@ public class GameManager : MonoBehaviour
                 {
                     instance.playSound("Button");
                   
-                    slotLimit = playerInventory.slotLimit;
+                 //   slotLimit = playerInventory.slotLimit;
 
                     conBoxList.Clear();
                     inventoryItems = playerInventory.inventoryItems;

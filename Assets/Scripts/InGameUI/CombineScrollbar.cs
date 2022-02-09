@@ -6,39 +6,36 @@ using UnityEditor;
 public class CombineScrollbar : MonoBehaviour
 {
     private GameObject combinePanels;
+    private GameObject primePanel;
     private Scrollbar scrollBar;
     private float scrollHeight;
     int count;
-  //  [SerializeField] GameObject combineSlots;
+
     Vector3 position;
     Vector3 positionOrg;
 
     void Awake()
     {
         combinePanels = transform.GetChild(0).gameObject;
+        primePanel = combinePanels.transform.GetChild(0).gameObject;
+
+
+
         scrollBar = GameObject.Find("CombineScrollbar").GetComponent<Scrollbar>();
         positionOrg = combinePanels.transform.localPosition;
         List<Dictionary<int, CombineInfo>> combineInfoData = CSVReader.Read("CombineData");
         count = combineInfoData.Count;
-  
-        for (int i = 0; i < count - 2; i++)
+
+        for (int i = 0; i < count - 3; i++)
         {
-            GameObject combineSlot = Resources.Load("Prefab/CombineSlot") as GameObject;
-            GameObject instance;
-#if UNITY_EDITOR
-          instance = PrefabUtility.InstantiatePrefab(combineSlot) as GameObject;
-#endif
-
-#if UNITY_ANDROID
-           instance = new GameObject();
-#endif
 
 
-            instance.transform.SetParent(combinePanels.transform);
-            
+            Instantiate(primePanel, combinePanels.transform);
+
+
+
         }
-
-        combinePanels.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 442 * (combinePanels.transform.childCount)/2);
+        combinePanels.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 442 * (combinePanels.transform.childCount) / 2);
         scrollHeight = combinePanels.GetComponent<RectTransform>().rect.height;
     }
 

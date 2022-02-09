@@ -46,7 +46,6 @@ public class ItemOption : MonoBehaviour
 
         if (!playerInventory.inventoryItems[transform.GetSiblingIndex()].isEmpty)
         {
-            Debug.Log(this);
             itemMenu.itemOption = this;
             itemMenu.gameObject.SetActive(true);
 

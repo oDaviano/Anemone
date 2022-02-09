@@ -20,8 +20,6 @@ public class ChangePanel : MonoBehaviour
     {
         playerInventory = GameObject.Find("PlayerCharacter").GetComponent<PlayerInventory>();
         extendCount = playerInventory.slotLimit / 5 - 2;
-      //  invenButton = transform.GetChild(0).GetComponent<Button>();
-     //   combineButton = transform.GetChild(1).GetComponent<Button>();
         ButtonInitialize();
 
     }

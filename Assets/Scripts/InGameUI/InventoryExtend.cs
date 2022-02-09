@@ -28,8 +28,8 @@ public class InventoryExtend : MonoBehaviour
     GameObject slot3;
     GameObject slot4;
 
-    private Button extendButton;
-    private Button cancelButton;
+  [SerializeField]private Button extendButton;
+  [SerializeField]private Button cancelButton;
 
 
     void Start()
@@ -41,21 +41,7 @@ public class InventoryExtend : MonoBehaviour
         extendButton.onClick.AddListener(() =>
         {
             Extend();
-            /*
             gameObject.SetActive(false);
-            if (playerInventory.slotLimit >= 15)
-            {
-                slotLock1.SetActive(false);
-            }
-            if (playerInventory.slotLimit >= 20)
-            {
-                slotLock2.SetActive(false);
-            }
-            if (playerInventory.slotLimit >= 25)
-            {
-                slotLock3.SetActive(false);
-            }
-            */
         });
         cancelButton.onClick.AddListener(() =>
         {
@@ -236,6 +222,8 @@ public class InventoryExtend : MonoBehaviour
 
             playerInventory.slotLimit = 25;
         }
+
+        GameManager.instance.slotLimit = playerInventory.slotLimit;
 
 
     }

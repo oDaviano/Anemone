@@ -12,10 +12,14 @@ public class ItemMenu : MonoBehaviour
     [SerializeField] private GameObject dropPanel;
     public ItemOption itemOption;
 
-  [SerializeField] Button use;
-  [SerializeField] Button dis;
+    [SerializeField] Button use;
+    [SerializeField] Button dis;
     [SerializeField] Button close;
     public ItemSlotInfo selectedItem;
+
+    [SerializeField] GameObject itemName;
+    [SerializeField] GameObject itemSprite;
+
 
     int itemCount;
     int itemIndex;
@@ -32,10 +36,14 @@ public class ItemMenu : MonoBehaviour
         use.onClick.AddListener(Use);
         dis.onClick.AddListener(CallDropPanel);
         close.onClick.AddListener(() => { gameObject.SetActive(false); });
-    itemSlotInfoData = CSVReader.WeaponRead("Weapon");
+        itemSlotInfoData = CSVReader.WeaponRead("Weapon");
     }
 
-
+void Update()
+    {
+        itemName.GetComponent<Text>().text = selectedItem.itemName;
+        itemSprite.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{selectedItem.itemName}");
+    }
 
     public void Use()
     {
@@ -43,7 +51,7 @@ public class ItemMenu : MonoBehaviour
         int.TryParse(selectedItem.itemCode, out itemCode);
         if (use.gameObject.transform.GetComponentInChildren<Text>().text == "사용")
         {
-         
+
             if (itemCode / 1000 < 11)
             {
                 for (int i = 0; i < itemSlotInfoData.Count - 1; i++)
@@ -51,7 +59,7 @@ public class ItemMenu : MonoBehaviour
 
                     if (itemSlotInfoData[i + 1][i].itemCode == selectedItem.itemCode)
                     {
-        
+
                         playerInventory.equipedWeaponInfo = itemSlotInfoData[i + 1][i];
                         break;
                     }
@@ -67,13 +75,13 @@ public class ItemMenu : MonoBehaviour
 
     public void CallDropPanel()
     {
-      
-       gameObject.SetActive(false);
+
+        gameObject.SetActive(false);
         callDropPanel = !callDropPanel;
         callPanel = !callPanel;
-      //  transform.GetChild(0).gameObject.SetActive(callPanel);
+        //  transform.GetChild(0).gameObject.SetActive(callPanel);
         dropPanel.SetActive(true);
-      // dropPanel.drop
+        // dropPanel.drop
 
     }
 
