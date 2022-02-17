@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-
+       //싱글톤
         if (instance != null)
         {
             Destroy(gameObject);
@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         backGroundAudioSource = GetComponent<AudioSource>();
+
+        //저장된 데이터 적용
         DataController.Instance.LoadGameData("Option");
         DataController.Instance.LoadGameData("DataFile");
         setDatas();
@@ -60,7 +62,7 @@ public class GameManager : MonoBehaviour
         audioSource.volume = soundPlay;
         backGroundAudioSource.volume = backGroundPlay;
 
-
+        //페이드 인 효과
         if (timeLimit > 0 && fade!=null)
         {
             Time.timeScale = 1.0f;
@@ -76,9 +78,9 @@ public class GameManager : MonoBehaviour
 
     public void setDatas()
     {
+
         inventoryItems = new List<ItemSlotInfo>();
         inventoryItems = DataController.Instance.gameData.inventoryItems;
-
 
         conBoxList = new List<BoxRemains>();
         conBoxList = DataController.Instance.gameData.conBoxList;
@@ -120,6 +122,7 @@ public class GameManager : MonoBehaviour
             if(exitUI!=null)
             exitUI.transform.GetChild(0).GetComponent<Text>().text = "탐색을 중단하고 지도로 돌아가시겠습니까?";
 
+        //스테이지 종료시 페이드 아웃 효과
         if (timeLimit <= 0)
         {
             fadeColor.a += Time.deltaTime * 4f;
@@ -147,6 +150,8 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+    //타이머함수
     void TimerCount()
     {
         int minutes = (int)timeLimit / 60;
@@ -167,6 +172,7 @@ public class GameManager : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        //Stage 태그가 달린 오브젝트가 존재할 때 => 로드된 씬이 지역 씬일 때
         stage = GameObject.FindGameObjectWithTag("Stage");
         if (stage!=null)
         {
@@ -198,7 +204,7 @@ public class GameManager : MonoBehaviour
 
                 });
             }
-
+            //UI 매니저(필드)와 탈출 UI가 모두 null일때 Find
             if ((uiManager == null) && (exitUI == null))
             {
                 var mainUI = GameObject.Find("MainUI");
@@ -215,7 +221,7 @@ public class GameManager : MonoBehaviour
 
                     conBoxList.Clear();
                     inventoryItems = playerInventory.inventoryItems;
-
+                    //저장된 편의점 아이템 박스에 남은 아이템 데이터 적용
                     if (stage.name == "Convenience")
                     {
                         for (int i = 0; i < stage.transform.childCount; i++)
@@ -227,6 +233,8 @@ public class GameManager : MonoBehaviour
                     }
 
                     DataController.Instance.SaveGameData("DataFile");
+
+                    //1일차 대화 씬으로 넘어감
                     if (day <= 1)
                         SceneManager.LoadScene("Dialog", LoadSceneMode.Single);
                     else
@@ -251,6 +259,7 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
 
     void OnEnable()
     {

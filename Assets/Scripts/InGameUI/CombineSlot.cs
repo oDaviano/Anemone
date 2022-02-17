@@ -56,7 +56,7 @@ public class CombineSlot : MonoBehaviour
     //재료&결과물 아이콘, 재료 요구량
     private void SetCombineData()
     {
-        transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Icons/Items/{combineInfo.resultName}");
+        transform.GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.resultName}");
         transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.m1Name}");
         transform.GetChild(2).GetChild(1).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.m2Name}");
         transform.GetChild(2).GetChild(2).GetChild(1).GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Items/{combineInfo.m3Name}");
